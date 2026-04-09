@@ -1,12 +1,19 @@
 import { NavLink } from 'react-router-dom';
 import { Home, Search, Bookmark, User, Settings, LogOut, Zap } from 'lucide-react';
 
-const MAIN_LINKS = [
-  { label: 'Home', path: '/', icon: <Home size={24} /> },
-  { label: 'Search', path: '/search', icon: <Search size={24} /> },
-  { label: 'Saved', path: '/saved', icon: <Bookmark size={24} /> },
-  { label: 'Account', path: '/account', icon: <User size={24} /> },
+const MAIN_LINKS: NavLinkItem[] = [
+  { label: 'Home', path: '/', icon: Home },     // Just the name
+  { label: 'Search', path: '/search', icon: Search },
+  { label: 'Saved', path: '/saved', icon: Bookmark },
+  { label: 'Account', path: '/account', icon: User },
 ];
+
+interface NavLinkItem {
+  label: string;
+  path: string;
+  icon: React.ElementType;
+}
+
 
 export default function Navbar() {
   return (
@@ -36,7 +43,8 @@ export default function Navbar() {
 
         {/* 3. UTILITY LINKS */}
         <div className="hidden md:flex flex-col items-center gap-10 mt-auto pb-10 w-full">
-          <NavIcon link={{ label: 'Settings', path: '/settings', icon: <Settings size={24} /> }} />
+          <NavIcon link={{ label: 'Settings', path: '/settings', icon: Settings  /* Pass the component name only */}} 
+        />
           
           <button className="flex flex-col items-center gap-1 text-app-muted hover:text-app-light transition-colors cursor-pointer group">
             <LogOut size={24} className="group-hover:translate-x-1 transition-transform" />
@@ -48,21 +56,23 @@ export default function Navbar() {
   );
 }
 
-function NavIcon({ link }: { link: { label: string, path: string, icon: React.ReactNode } }) {
-  return (
-    <NavLink 
-      to={link.path} 
+function NavIcon({ link: { label, path, icon: Icon } }: { link: NavLinkItem }) {
+ return (
+    <NavLink
+      to={path}
       className={({ isActive }) => `
         flex flex-col items-center gap-1 transition-all duration-200
-        /* Active = Cream color, Inactive = Muted steel color */
-       ${isActive 
-        ? 'text-light-text dark:text-nature-cream scale-110' 
-        : 'text-light-text/40 dark:text-nature-sage hover:text-light-text dark:hover:text-nature-cream'}
+        ${isActive 
+          ? 'text-light-text dark:text-nature-cream scale-110' 
+          : 'text-light-text/40 dark:text-nature-sage hover:text-light-text dark:hover:text-nature-cream'}
       `}
     >
-        
-      <span>{link.icon}</span>
-      <span className="text-[10px] font-medium tracking-tighter">{link.label}</span>
+      {({ isActive }) => (
+        <>
+          <Icon size={24} fill={isActive ? "#697565" : "none"} />
+          <span className="text-[10px] font-medium tracking-tighter">{label}</span>
+        </>
+      )}
     </NavLink>
   );
 }
