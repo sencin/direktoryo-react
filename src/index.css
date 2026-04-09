@@ -1,25 +1,35 @@
+/* 1. External Imports first */
 @import url('https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&display=swap');
+
+/* 2. Tailwind Core */
 @import "tailwindcss";
 
+
+/* 3. Theme Configuration */
 @theme {
-  /* v4 automatically handles dark mode, but to force 'class' strategy: */
   --variant-dark: .dark &;
   --font-mono: "DM Mono", monospace;
   --nav-width: 96px;
+
+  /* Nature Dark Palette */
+  --color-nature-bg: #181C14;    
+  --color-nature-nav: #3C3D37;     
+  --color-nature-cream: #ECDFCC; 
+  --color-nature-sage: #697565;   
+
+  /* New Light Mode Palette (Example colors) */
+  --color-light-bg: #FFFFFF;
+  --color-light-nav: #F3F4F6;
+  --color-light-text: #111827;
+
 }
 
-/* Optional: Smooth transitions for all theme changes */
+/* 4. Base styles and Custom Classes */
 @layer base {
-  *, ::after, ::before {
-    @apply transition-colors duration-300;
-  }
-
   body {
-    @apply font-mono;
+    @apply font-mono bg-light-bg text-light-text dark:bg-nature-bg dark:text-nature-cream transition-colors duration-300;
   }
-  
 }
-
 .dm-mono-light {
   font-family: "DM Mono", monospace;
   font-weight: 300;
