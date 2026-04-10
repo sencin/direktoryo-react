@@ -78,7 +78,7 @@ useEffect(() => {
             <div className="px-8 opacity-20 animate-pulse font-black text-[10px] uppercase">Loading Resources...</div>
           ) : (
             <BookGrid 
-              title={activeCollection === 'All' ? "Featured" : "Collection Results"}
+              title={activeCollection === 'All' ? "Featured" : "Results"}
               books={collectionBooks} 
               onBookClick={handleBookClick} 
             />

@@ -6,7 +6,7 @@ interface BookGridProps {
 
 export default function BookGrid({ title, books, onBookClick }: BookGridProps) {
   return (
-    <section className="p-8">
+    <section className="px-8">
       <div className="flex justify-between items-end mb-8">
         <h3 className="font-bold text-xl uppercase tracking-widest">{title}</h3>
         <button className="text-[10px] font-bold underline opacity-50 uppercase tracking-widest">more</button>
