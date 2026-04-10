@@ -15,7 +15,7 @@ const mapResourceToBook = (item: any) => {
 };
 
 export const ResourceService = {
-  fetchAllResource: async (): Promise<Book[]> => {
+  fetchAllResource: async () => {
     try {
       const response = await api.get('/resources');
 
@@ -34,7 +34,7 @@ export const ResourceService = {
     }
   },
 
-  fetchByCategoryId: async (id: number | string): Promise<Book[]> => {
+  fetchByCategoryId: async (id: number | string) => {
     try {
       const response = await api.get(`/resources?category_id=${id}`);
 
