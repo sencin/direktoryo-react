@@ -26,6 +26,8 @@ const fetchAllResources = async () => {
   const response = await api.get('/collections/resources');
 
   if (response.success) {
+
+    
     return response.data.map(mapResourceToBook);
   }
 
