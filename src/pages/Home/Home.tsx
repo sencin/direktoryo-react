@@ -123,8 +123,8 @@ export default function Home() {
                 <h2
                     className={
                       isInsideCollection
-                        ? "text-[10px] font-black uppercase tracking-[0.3em] opacity-30 mb-1"
-                        : "font-bold text-xl uppercase tracking-widest"
+                        ? "text-[7px] font-black tracking-[0.3em] opacity-30 mb-1"
+                        : "text-sm tracking-widest"
                     }
                   >
                     {isInsideCollection ? "Viewing Collection" : "Browse by Collection"}
