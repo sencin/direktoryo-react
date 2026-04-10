@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import HomeHeader from "../../components/Home/HomeHeader";
 import CategoryBar from '../../components/Home/CategoryBar';
 import PromoBanner from '../../components/Home/PromoBanner';
@@ -6,13 +6,15 @@ import BookGrid from '../../components/Home/BookGrid';
 import BookDetailPanel from '../../components/Home/BookDetailPanel';
 import { MOCK_BOOKS } from '../../data/mockData'; // Move your data to a separate file
 import CollectionsBar from '../../components/Home/CollectionsBar';
+import { api } from '../../utils/api';
 
 export default function Home() {
   const [activeCategory, setActiveCategory] = useState('Everything');
   const [selectedBook, setSelectedBook] = useState<any>(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-
-  const [activeCollection, setActiveCollection] = useState('All');
+  const [collectionBooks, setCollectionBooks] = useState<any[]>([]);
+  const [activeCollection, setActiveCollection] = useState<string | number>('All');
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleBookClick = (book: any) => {
     setSelectedBook(book);
@@ -23,15 +25,45 @@ export default function Home() {
     activeCategory === 'Everything' || book.format === activeCategory
   );
 
-  const filteredBooks = activeCategory === 'Everything' 
-    ? MOCK_BOOKS 
-    : MOCK_BOOKS.filter(b => b.format === activeCategory);
+  
 
-// Filter Logic for Grid 2 (Collections)
-  const collectionBooks = MOCK_BOOKS.filter(book => 
-    activeCollection === 'All' || (book.tags && book.tags.includes(activeCollection))
-  );
+useEffect(() => {
+  const fetchCollectionBooks = async () => {
+    setIsLoading(true);
+    try {
+      // 1. Determine the correct URL based on selection
+      const url = activeCollection === 'All' 
+        ? `/collections/resources`              // Endpoint for ALL collection resources
+        : `/collections/${activeCollection}/resources`; // Endpoint for specific ID
 
+      // 2. Execute the fetch
+      const response = await api.get(url);
+
+      if (response.success) {
+        // Normalizing the JSON to match your UI component props
+        const normalizedData = response.data.map((item: any) => ({
+          ...item,
+          id: item.id,
+          title: item.name,        // Maps "PSA Serbilis Online" to title
+          author: item.creator,    // Maps "Philippine Statistics Authority" to author
+          description: item.description,
+          url: item.official_url,
+          tag: item.media_type ,    // "website", "pdf", etc.
+          image_url: item.image_url
+        }));
+        
+        setCollectionBooks(normalizedData);
+      }
+    } catch (error) {
+      console.error("Error fetching collection resources:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  fetchCollectionBooks();
+}, [activeCollection]);
+  
   return (
     <div className="flex flex-col min-h-screen bg-light-bg dark:bg-nature-bg text-light-text dark:text-nature-cream transition-colors duration-300">
       <HomeHeader />
@@ -68,12 +100,16 @@ export default function Home() {
           active={activeCollection} 
           setActive={setActiveCollection} 
         />
-        <div className="mt-6">
-          <BookGrid 
-            title={activeCollection === 'All' ? "Featured" : activeCollection}
-            books={collectionBooks} 
-            onBookClick={handleBookClick} 
-          />
+       <div className="mt-6">
+          {isLoading ? (
+            <div className="px-8 opacity-20 animate-pulse font-black text-[10px] uppercase">Loading Resources...</div>
+          ) : (
+            <BookGrid 
+              title={activeCollection === 'All' ? "Featured" : "Collection Results"}
+              books={collectionBooks} 
+              onBookClick={handleBookClick} 
+            />
+          )}
         </div>
       </section>
 
@@ -87,4 +123,8 @@ export default function Home() {
       </div>
     </div>
   );
+}
+
+function setIsLoading(arg0: boolean) {
+  throw new Error('Function not implemented.');
 }
