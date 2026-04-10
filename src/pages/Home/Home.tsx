@@ -6,16 +6,17 @@ import BookDetailPanel from '../../components/Home/BookDetailPanel';
 import { MOCK_BOOKS } from '../../services/mockData'; 
 import CollectionsBar from '../../components/Home/CollectionsBar';
 import { CollectionService } from '../../services/collectionService';
+import { ResourceService } from '../../services/resourceServices';
 
 export default function Home() {
-  const [activeCategory, setActiveCategory] = useState('Everything');
+  const [activeCategory, setActiveCategory] = useState<number | 'all'>('all');
   const [selectedBook, setSelectedBook] = useState<any>(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [collectionBooks, setCollectionBooks] = useState<any[]>([]);
   const [activeCollection, setActiveCollection] = useState<string | number>('All');
   const [isLoading, setIsLoading] = useState(false);
   const collectionCache = useRef<Record<string, any[]>>({});
-
+  const [resourceBooks, setResourceBooks] = useState<any[]>([]);
   const isInsideCollection = activeCollection !== 'All';
 
 
@@ -24,10 +25,6 @@ export default function Home() {
     setIsSidebarOpen(true);
   };
 
-  // Logic for the Category path (Mock Data)
-  const categoryBooks = MOCK_BOOKS.filter(book => 
-    activeCategory === 'Everything' || book.format === activeCategory
-  );
 
  useEffect(() => {
   const loadData = async () => {
@@ -65,6 +62,30 @@ export default function Home() {
 
   loadData();
 }, [activeCollection]);
+
+
+useEffect(() => {
+  const loadData = async () => {
+    try {
+      if (activeCategory === 'all') {
+        const resourceBooks = await ResourceService.fetchAllResource();
+        console.log(resourceBooks)
+        setResourceBooks(resourceBooks);
+      } else {
+        console.log("am i triggered")
+        const resourceBooks = await ResourceService.fetchByCategoryId(activeCategory);
+
+        console.log(resourceBooks)
+        setResourceBooks(resourceBooks);
+      }
+    } catch (error) {
+      console.error('Failed to load resources:', error);
+      setResourceBooks([]);
+    }
+  };
+
+  loadData();
+}, [activeCategory]);
 
   return (
     <div className="flex flex-col min-h-screen bg-light-bg dark:bg-nature-bg text-light-text dark:text-nature-cream transition-colors duration-300">
@@ -106,8 +127,8 @@ export default function Home() {
                   <CategoryBar active={activeCategory} setActive={setActiveCategory} />
                   <div className="mt-4">
                     <BookGrid 
-                      title={activeCategory === 'Everything' ? "Recent Resources" : activeCategory}
-                      books={categoryBooks} 
+                      title={"Resources"}
+                      books={resourceBooks} 
                       onBookClick={handleBookClick} 
                     />
                   </div>
