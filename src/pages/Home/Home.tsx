@@ -6,7 +6,6 @@ import BookGrid from '../../components/Home/BookGrid';
 import BookDetailPanel from '../../components/Home/BookDetailPanel';
 import { MOCK_BOOKS } from '../../services/mockData'; // Move your data to a separate file
 import CollectionsBar from '../../components/Home/CollectionsBar';
-import { api } from '../../utils/api';
 import { ResourceService } from '../../services/collectionService';
 
 export default function Home() {
@@ -26,16 +25,11 @@ export default function Home() {
     activeCategory === 'Everything' || book.format === activeCategory
   );
 
-  
 
 useEffect(() => {
     const loadData = async () => {
       setIsLoading(true);
-      
-      // We just call the service. 
-      // It handles the "if All" logic and the data formatting internally.
       const books = await ResourceService.getCollectionBooks(activeCollection.toString());
-      
       setCollectionBooks(books);
       setIsLoading(false);
     };
