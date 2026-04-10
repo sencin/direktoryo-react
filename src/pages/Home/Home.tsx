@@ -69,7 +69,7 @@ useEffect(() => {
       <HomeHeader />
 
       <div className="flex flex-1 overflow-hidden relative">
-        <main className="flex-1 overflow-y-auto no-scrollbar space-y-16 py-10">
+        <main className="flex-1 overflow-y-auto no-scrollbar space-y-16 py-4">
       
       {/* SECTION 1: THE CATEGORY ENGINE */}
       <section>
