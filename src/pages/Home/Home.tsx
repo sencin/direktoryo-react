@@ -30,36 +30,41 @@ export default function Home() {
   );
 
  useEffect(() => {
-    const loadData = async () => {
-      if (activeCollection === 'All') return;
+  const loadData = async () => {
+    if (activeCollection === 'All') return;
 
-      const key = activeCollection.toString();
+    const key = activeCollection.toString();
 
-      // ✅ Use cache instantly (no flicker)
-      if (collectionCache.current[key]) {
-        setCollectionBooks(collectionCache.current[key]);
-        return;
-      }
-
-      // ⏳ Only show loading if not cached
+    // ✅ Show cached instantly (if exists)
+    if (collectionCache.current[key]) {
+      setCollectionBooks(collectionCache.current[key]);
+    } else {
       setIsLoading(true);
+    }
 
-      try {
-        const books = await ResourceService.getCollectionBooks(key);
+    try {
+      const books = await ResourceService.getCollectionBooks(key);
 
-        // ✅ Save to cache
-        collectionCache.current[key] = books;
+      // ✅ Update cache
+      collectionCache.current[key] = books;
 
-        setCollectionBooks(books);
-      } catch (err) {
-        console.error("Failed to fetch collection:", err);
-      } finally {
-        setIsLoading(false);
-      }
-    };
+      // ✅ Update UI (only if changed to avoid unnecessary re-render)
+      setCollectionBooks(prev => {
+        const isSame = JSON.stringify(prev) === JSON.stringify(books);
+        return isSame ? prev : books;
+      });
 
-    loadData();
-  }, [activeCollection]);
+      console.log("Refetch Success")
+
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  loadData();
+}, [activeCollection]);
 
   return (
     <div className="flex flex-col min-h-screen bg-light-bg dark:bg-nature-bg text-light-text dark:text-nature-cream transition-colors duration-300">
