@@ -5,7 +5,7 @@ import BookGrid from '../../components/Home/BookGrid';
 import BookDetailPanel from '../../components/Home/BookDetailPanel';
 import { MOCK_BOOKS } from '../../services/mockData'; 
 import CollectionsBar from '../../components/Home/CollectionsBar';
-import { ResourceService } from '../../services/collectionService';
+import { CollectionService } from '../../services/collectionService';
 
 export default function Home() {
   const [activeCategory, setActiveCategory] = useState('Everything');
@@ -43,7 +43,7 @@ export default function Home() {
     }
 
     try {
-      const books = await ResourceService.getCollectionBooks(key);
+      const books = await CollectionService.getCollectionBooks(key);
 
       // ✅ Update cache
       collectionCache.current[key] = books;

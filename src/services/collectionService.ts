@@ -48,7 +48,7 @@ const fetchResourcesByCollection = async (collectionId: string) => {
 /**
  * 3. EXPORTED SERVICE
  */
-export const ResourceService = {
+export const CollectionService = {
   
   async getCollectionBooks(activeCollection: string) {
     try {
