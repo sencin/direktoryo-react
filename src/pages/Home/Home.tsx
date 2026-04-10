@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import HomeHeader from "../../components/Home/HomeHeader";
 import CategoryBar from '../../components/Home/CategoryBar';
 import BookGrid from '../../components/Home/BookGrid';
@@ -14,7 +14,7 @@ export default function Home() {
   const [collectionBooks, setCollectionBooks] = useState<any[]>([]);
   const [activeCollection, setActiveCollection] = useState<string | number>('All');
   const [isLoading, setIsLoading] = useState(false);
-  const COLLECTION_CACHE: Record<string, any[]> = {};
+  const collectionCache = useRef<Record<string, any[]>>({});
 
   const isInsideCollection = activeCollection !== 'All';
 
@@ -29,33 +29,30 @@ export default function Home() {
     activeCategory === 'Everything' || book.format === activeCategory
   );
 
-  // Logic for the Collections path (API Data)
-  useEffect(() => {
+ useEffect(() => {
     const loadData = async () => {
       if (activeCollection === 'All') return;
 
-      const cacheKey = activeCollection.toString();
+      const key = activeCollection.toString();
 
-      // 2. CHECK CACHE FIRST
-      if (COLLECTION_CACHE[cacheKey]) {
-        // Data is already here! Set it immediately to kill the flicker.
-        setCollectionBooks(COLLECTION_CACHE[cacheKey]);
-        setIsLoading(false); 
-      } else {
-        // No cache found? Now we show the loading state.
-        setCollectionBooks([]); 
-        setIsLoading(true);
+      // ✅ Use cache instantly (no flicker)
+      if (collectionCache.current[key]) {
+        setCollectionBooks(collectionCache.current[key]);
+        return;
       }
 
+      // ⏳ Only show loading if not cached
+      setIsLoading(true);
+
       try {
-        // 3. FETCH DATA (Background refresh if cache exists, or primary fetch if not)
-        const books = await ResourceService.getCollectionBooks(cacheKey);
-        
-        // Update both the Cache and the State
-        COLLECTION_CACHE[cacheKey] = books;
+        const books = await ResourceService.getCollectionBooks(key);
+
+        // ✅ Save to cache
+        collectionCache.current[key] = books;
+
         setCollectionBooks(books);
-      } catch (error) {
-        console.error("Failed to load collection:", error);
+      } catch (err) {
+        console.error("Failed to fetch collection:", err);
       } finally {
         setIsLoading(false);
       }
@@ -77,14 +74,40 @@ export default function Home() {
               <div className="px-8 mb-4 flex justify-between items-end">
                 <h2 className="text-[10px] font-black uppercase tracking-[0.3em] opacity-30">Quick Filter</h2>
               </div>
-              <CategoryBar active={activeCategory} setActive={setActiveCategory} />
-              <div className="mt-6">
-                <BookGrid 
-                  title={activeCategory === 'Everything' ? "Recent Resources" : activeCategory}
-                  books={categoryBooks} 
-                  onBookClick={handleBookClick} 
-                />
-              </div>
+
+              {/* SKELETON LOGIC */}
+              {isLoading ? (
+                <div className="space-y-6">
+                  {/* Category Bar Skeleton */}
+                  <div className="flex gap-3 px-8 overflow-hidden">
+                    {[1, 2, 3, 4, 5].map((i) => (
+                      <div key={i} className="h-8 w-20 bg-black/5 dark:bg-white/5 rounded-sm animate-pulse" />
+                    ))}
+                  </div>
+                  
+                  {/* Book Grid Skeleton */}
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-6 px-8 mt-6">
+                    {[1, 2, 3, 4].map((i) => (
+                      <div key={i} className="space-y-3 animate-pulse">
+                        <div className="aspect-[3/4] bg-black/5 dark:bg-white/5 rounded-2xl" />
+                        <div className="h-3 w-3/4 bg-black/5 dark:bg-white/5 rounded" />
+                        <div className="h-2 w-1/2 bg-black/5 dark:bg-white/5 rounded opacity-50" />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <>
+                  <CategoryBar active={activeCategory} setActive={setActiveCategory} />
+                  <div className="mt-6">
+                    <BookGrid 
+                      title={activeCategory === 'Everything' ? "Recent Resources" : activeCategory}
+                      books={categoryBooks} 
+                      onBookClick={handleBookClick} 
+                    />
+                  </div>
+                </>
+              )}
             </section>
           )}
 
