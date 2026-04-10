@@ -12,7 +12,7 @@ export default function BookGrid({ title, books, onBookClick }: BookGridProps) {
         <button className="text-[10px] font-bold underline opacity-50 uppercase tracking-widest">more</button>
       </div>
       
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-x-6 gap-y-10">
+      <div className="grid grid-cols-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-10 gap-x-6 gap-y-10">
         {books.map((book) => (
           <div key={book.id} onClick={() => onBookClick(book)} className="cursor-pointer group flex flex-col">
             

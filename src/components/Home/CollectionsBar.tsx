@@ -36,7 +36,7 @@ export default function CollectionsBar({setActive }: CollectionsBarProps) {
 
   if (loading) {
     return (
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 px-8 py-4 animate-pulse">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-8 gap-6 px-8 py-4 animate-pulse">
         {[1, 2, 3, 4].map((i) => (
           <div key={i} className="space-y-3">
              <div className="aspect-[4/5] bg-black/5 dark:bg-white/5 rounded-2xl" />
@@ -48,7 +48,7 @@ export default function CollectionsBar({setActive }: CollectionsBarProps) {
   }
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 px-8 py-4">
+    <div className="grid grid-cols-3 md:grid-cols-3 lg:grid-cols-8 gap-8 px-8 py-4">
       {collections.map((col) => (
         <button
           key={col.id}

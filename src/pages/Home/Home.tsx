@@ -123,9 +123,6 @@ export default function Home() {
                 <h2 className="text-[10px] font-black uppercase tracking-[0.3em] opacity-30 mb-1">
                   {isInsideCollection ? "Viewing Collection" : "Browse by Collection"}
                 </h2>
-                {isInsideCollection && (
-                  <h1 className="text-sm font-black uppercase tracking-tighter">{activeCollection}</h1>
-                )}
               </div>
 
               {isInsideCollection && (
