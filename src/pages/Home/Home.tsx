@@ -118,7 +118,7 @@ export default function Home() {
 
           {/* --- OPTION 2: COLLECTIONS ENGINE --- */}
           <section className={`${!isInsideCollection ? 'pt-8 border-t border-black/5' : ''}`}>
-            <div className="px-8 mb-6 flex justify-between items-center">
+            <div className="px-6 mb-4 flex justify-between items-center">
               <div>
                 <h2 className="text-[10px] font-black uppercase tracking-[0.3em] opacity-30 mb-1">
                   {isInsideCollection ? "Viewing Collection" : "Browse by Collection"}
