@@ -71,12 +71,12 @@ export default function Home() {
       <HomeHeader />
 
       <div className="flex flex-1 overflow-hidden relative">
-        <main className="flex-1 overflow-y-auto no-scrollbar space-y-12 py-4">
+        <main className="flex-1 overflow-y-auto no-scrollbar space-y-8 py-4">
           
           {/* --- OPTION 1: CATEGORY ENGINE (Only visible when not deep in a collection) --- */}
           {!isInsideCollection && (
             <section className="animate-in fade-in slide-in-from-top-4 duration-700">
-              <div className="px-8 mb-4 flex justify-between items-end">
+              <div className="px-8 flex justify-between items-end">
                 <h2 className="text-[10px] font-black uppercase tracking-[0.3em] opacity-30">Quick Filter</h2>
               </div>
 
@@ -104,7 +104,7 @@ export default function Home() {
               ) : (
                 <>
                   <CategoryBar active={activeCategory} setActive={setActiveCategory} />
-                  <div className="mt-6">
+                  <div className="mt-4">
                     <BookGrid 
                       title={activeCategory === 'Everything' ? "Recent Resources" : activeCategory}
                       books={categoryBooks} 
@@ -120,9 +120,15 @@ export default function Home() {
           <section className={`${!isInsideCollection ? 'pt-8 border-t border-black/5' : ''}`}>
             <div className="px-6 mb-4 flex justify-between items-center">
               <div>
-                <h2 className="text-[10px] font-black uppercase tracking-[0.3em] opacity-30 mb-1">
-                  {isInsideCollection ? "Viewing Collection" : "Browse by Collection"}
-                </h2>
+                <h2
+                    className={
+                      isInsideCollection
+                        ? "text-[10px] font-black uppercase tracking-[0.3em] opacity-30 mb-1"
+                        : "font-bold text-xl uppercase tracking-widest"
+                    }
+                  >
+                    {isInsideCollection ? "Viewing Collection" : "Browse by Collection"}
+                  </h2>
               </div>
 
               {isInsideCollection && (
