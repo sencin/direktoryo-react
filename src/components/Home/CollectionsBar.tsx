@@ -1,40 +1,83 @@
-import React from 'react';
+import { useState, useEffect } from 'react';
+import { api } from '../../utils/api';
 
-interface CollectionsBarProps {
-  active: string;
-  setActive: (category: string) => void;
+interface Collection {
+  id: number;
+  name: string;
 }
 
-// These match the 'tags' we will look for in MOCK_BOOKS
-const COLLECTIONS = [
-  'All',
-  'Quick Reads',
-  'Deep Learning',
-  'Focus',
-  'Relaxation',
-  'Morning Routine'
-];
+interface CollectionsBarProps {
+  active: string | number;
+  setActive: (id: string | number) => void;
+}
 
 export default function CollectionsBar({ active, setActive }: CollectionsBarProps) {
+  const [collections, setCollections] = useState<Collection[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchCollections = async () => {
+      try {
+        setLoading(true);
+        const response = await api.get('/collections'); 
+        if (response.success) {
+          setCollections(response.data);
+        }
+      } catch (error) {
+        console.error('Error fetching collections:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCollections();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="flex gap-3 px-8 py-2 animate-pulse">
+        {[1, 2, 3, 4].map((i) => (
+          <div key={i} className="h-8 w-24 bg-black/5 dark:bg-white/5 rounded-full" />
+        ))}
+      </div>
+    );
+  }
+
   return (
     <div className="flex items-center gap-3 px-8 overflow-x-auto no-scrollbar py-2">
-      {COLLECTIONS.map((item) => {
-        const isActive = active === item;
+      {/* 1. Static "All" Button */}
+      <button
+        onClick={() => setActive('All')}
+        className={`
+          whitespace-nowrap px-6 py-2.5 rounded-full text-[10px] font-black uppercase tracking-[0.15em] 
+          transition-all duration-300 border
+          ${active === 'All' 
+            ? 'bg-nature-sage text-nature-cream border-nature-sage shadow-md scale-105' 
+            : 'bg-transparent border-black/10 dark:border-white/10 hover:border-black/30'
+          }
+        `}
+      >
+        All
+      </button>
+
+      {/* 2. Dynamic Collection Buttons from API */}
+      {collections.map((col) => {
+        const isActive = active === col.id;
         
         return (
           <button
-            key={item}
-            onClick={() => setActive(item)}
+            key={col.id}
+            onClick={() => setActive(col.id)}
             className={`
               whitespace-nowrap px-6 py-2.5 rounded-full text-[10px] font-black uppercase tracking-[0.15em] 
               transition-all duration-300 border
               ${isActive 
                 ? 'bg-nature-sage text-nature-cream border-nature-sage shadow-md scale-105' 
-                : 'bg-transparent border-black/10 dark:border-white/10 hover:border-black/30 dark:hover:border-white/30'
+                : 'bg-transparent border-black/10 dark:border-white/10 hover:border-black/30'
               }
             `}
           >
-            {item}
+            {col.name}
           </button>
         );
       })}
