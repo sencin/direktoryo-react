@@ -14,8 +14,10 @@ export default function Home() {
   const [collectionBooks, setCollectionBooks] = useState<any[]>([]);
   const [activeCollection, setActiveCollection] = useState<string | number>('All');
   const [isLoading, setIsLoading] = useState(false);
+  const COLLECTION_CACHE: Record<string, any[]> = {};
 
   const isInsideCollection = activeCollection !== 'All';
+
 
   const handleBookClick = (book: any) => {
     setSelectedBook(book);
@@ -31,11 +33,34 @@ export default function Home() {
   useEffect(() => {
     const loadData = async () => {
       if (activeCollection === 'All') return;
-      setIsLoading(true);
-      const books = await ResourceService.getCollectionBooks(activeCollection.toString());
-      setCollectionBooks(books);
-      setIsLoading(false);
+
+      const cacheKey = activeCollection.toString();
+
+      // 2. CHECK CACHE FIRST
+      if (COLLECTION_CACHE[cacheKey]) {
+        // Data is already here! Set it immediately to kill the flicker.
+        setCollectionBooks(COLLECTION_CACHE[cacheKey]);
+        setIsLoading(false); 
+      } else {
+        // No cache found? Now we show the loading state.
+        setCollectionBooks([]); 
+        setIsLoading(true);
+      }
+
+      try {
+        // 3. FETCH DATA (Background refresh if cache exists, or primary fetch if not)
+        const books = await ResourceService.getCollectionBooks(cacheKey);
+        
+        // Update both the Cache and the State
+        COLLECTION_CACHE[cacheKey] = books;
+        setCollectionBooks(books);
+      } catch (error) {
+        console.error("Failed to load collection:", error);
+      } finally {
+        setIsLoading(false);
+      }
     };
+
     loadData();
   }, [activeCollection]);
 
