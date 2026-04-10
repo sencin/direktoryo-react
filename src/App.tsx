@@ -15,7 +15,7 @@ function App() {
                     /* DARK MODE COLORS */
                     dark:bg-nature-bg dark:text-nature-cream">
           <Navbar />
-          <main className="flex-1 pb-20 md:pb-0 md:pl-28 p-4">
+          <main className="flex-1 pb-20 md:pb-0 md:pl-24">
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/search" element={<Search/>} />
