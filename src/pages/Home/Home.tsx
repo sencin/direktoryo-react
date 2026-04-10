@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import HomeHeader from "../../components/Home/HomeHeader";
 import CategoryBar from '../../components/Home/CategoryBar';
-import PromoBanner from '../../components/Home/PromoBanner';
+// import PromoBanner from '../../components/Home/PromoBanner';
 import BookGrid from '../../components/Home/BookGrid';
 import BookDetailPanel from '../../components/Home/BookDetailPanel';
 import { MOCK_BOOKS } from '../../data/mockData'; // Move your data to a separate file
