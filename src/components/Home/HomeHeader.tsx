@@ -6,12 +6,12 @@ export default function HomeHeader() {
       {/* --- DESKTOP VIEW (Visible md and up) --- */}
       <header className="hidden md:flex items-center h-16 border-b border-black/10 dark:border-white/10">
         {/* Search Bar - Matches the Yellow Theme */}
-        <div className="flex-1 flex items-center px-6 h-full border-r border-black/10 dark:border-white/10 bg-[#F6E96B]">
+        <div className="flex-1 flex items-center px-6 h-full border-r border-black/10 dark:border-white/10 bg-nature-bg text-light-cream">
           <Search size={18} className="text-black mr-4" />
           <input 
             type="text" 
             placeholder="Title, author, host, or topic"
-            className="bg-transparent w-full outline-none text-black placeholder:text-black/40 font-bold text-sm tracking-tight"
+            className="bg-transparent w-full outline-none   font-bold text-sm tracking-tight"
           />
         </div>
         
