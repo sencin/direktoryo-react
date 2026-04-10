@@ -125,6 +125,6 @@ useEffect(() => {
   );
 }
 
-function setIsLoading(arg0: boolean) {
-  throw new Error('Function not implemented.');
-}
+// function setIsLoading(arg0: boolean) {
+//   throw new Error('Function not implemented.');
+// }
