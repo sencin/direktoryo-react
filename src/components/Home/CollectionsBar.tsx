@@ -44,12 +44,12 @@ export default function CollectionsBar({ active, setActive }: CollectionsBarProp
   }
 
   return (
-    <div className="flex items-center gap-3 px-8 overflow-x-auto no-scrollbar py-2">
+    <div className="flex items-center gap-3 px-6 overflow-x-auto no-scrollbar py-4">
       {/* 1. Static "All" Button */}
       <button
         onClick={() => setActive('All')}
         className={`
-          whitespace-nowrap px-6 py-2.5 rounded-full text-[10px] font-black uppercase tracking-[0.15em] 
+          whitespace-nowrap px-4 py-1.5  rounded-sm text-[10px] font-black uppercase tracking-[0.15em] 
           transition-all duration-300 border
           ${active === 'All' 
             ? 'bg-nature-sage text-nature-cream border-nature-sage shadow-md scale-105' 
@@ -69,7 +69,8 @@ export default function CollectionsBar({ active, setActive }: CollectionsBarProp
             key={col.id}
             onClick={() => setActive(col.id)}
             className={`
-              whitespace-nowrap px-6 py-2.5 rounded-full text-[10px] font-black uppercase tracking-[0.15em] 
+              whitespace-nowrap px-6 py-2.5  border-black dark:border-nature-cream/30
+              rounded-sm text-[10px] font-black uppercase tracking-[0.15em] 
               transition-all duration-300 border
               ${isActive 
                 ? 'bg-nature-sage text-nature-cream border-nature-sage shadow-md scale-105' 
