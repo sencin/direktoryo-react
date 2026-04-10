@@ -10,10 +10,6 @@ interface Category {
   created_at: string;
 }
 
-interface ApiResponse {
-  data: Category[];
-}
-
 interface CategoryBarProps {
   active: number | 'all';
   setActive: Dispatch<SetStateAction<number | 'all'>>;

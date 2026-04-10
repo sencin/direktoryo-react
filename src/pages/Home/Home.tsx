@@ -3,7 +3,6 @@ import HomeHeader from "../../components/Home/HomeHeader";
 import CategoryBar from '../../components/Home/CategoryBar';
 import BookGrid from '../../components/Home/BookGrid';
 import BookDetailPanel from '../../components/Home/BookDetailPanel';
-import { MOCK_BOOKS } from '../../services/mockData'; 
 import CollectionsBar from '../../components/Home/CollectionsBar';
 import { CollectionService } from '../../services/collectionService';
 import { ResourceService } from '../../services/resourceServices';
