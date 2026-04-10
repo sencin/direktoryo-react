@@ -4,9 +4,10 @@ import CategoryBar from '../../components/Home/CategoryBar';
 // import PromoBanner from '../../components/Home/PromoBanner';
 import BookGrid from '../../components/Home/BookGrid';
 import BookDetailPanel from '../../components/Home/BookDetailPanel';
-import { MOCK_BOOKS } from '../../data/mockData'; // Move your data to a separate file
+import { MOCK_BOOKS } from '../../services/mockData'; // Move your data to a separate file
 import CollectionsBar from '../../components/Home/CollectionsBar';
 import { api } from '../../utils/api';
+import { ResourceService } from '../../services/collectionService';
 
 export default function Home() {
   const [activeCategory, setActiveCategory] = useState('Everything');
@@ -28,41 +29,19 @@ export default function Home() {
   
 
 useEffect(() => {
-  const fetchCollectionBooks = async () => {
-    setIsLoading(true);
-    try {
-      // 1. Determine the correct URL based on selection
-      const url = activeCollection === 'All' 
-        ? `/collections/resources`              // Endpoint for ALL collection resources
-        : `/collections/${activeCollection}/resources`; // Endpoint for specific ID
-
-      // 2. Execute the fetch
-      const response = await api.get(url);
-
-      if (response.success) {
-        // Normalizing the JSON to match your UI component props
-        const normalizedData = response.data.map((item: any) => ({
-          ...item,
-          id: item.id,
-          title: item.name,        // Maps "PSA Serbilis Online" to title
-          author: item.creator,    // Maps "Philippine Statistics Authority" to author
-          description: item.description,
-          url: item.official_url,
-          tag: item.media_type ,    // "website", "pdf", etc.
-          image_url: item.image_url
-        }));
-        
-        setCollectionBooks(normalizedData);
-      }
-    } catch (error) {
-      console.error("Error fetching collection resources:", error);
-    } finally {
+    const loadData = async () => {
+      setIsLoading(true);
+      
+      // We just call the service. 
+      // It handles the "if All" logic and the data formatting internally.
+      const books = await ResourceService.getCollectionBooks(activeCollection.toString());
+      
+      setCollectionBooks(books);
       setIsLoading(false);
-    }
-  };
+    };
 
-  fetchCollectionBooks();
-}, [activeCollection]);
+    loadData();
+  }, [activeCollection]);
   
   return (
     <div className="flex flex-col min-h-screen bg-light-bg dark:bg-nature-bg text-light-text dark:text-nature-cream transition-colors duration-300">
