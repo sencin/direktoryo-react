@@ -13,7 +13,7 @@ interface CollectionsBarProps {
   setActive: (id: string | number) => void;
 }
 
-export default function CollectionsBar({ active, setActive }: CollectionsBarProps) {
+export default function CollectionsBar({setActive }: CollectionsBarProps) {
   const [collections, setCollections] = useState<Collection[]>([]);
   const [loading, setLoading] = useState(true);
 
