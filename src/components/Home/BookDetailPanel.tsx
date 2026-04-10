@@ -20,7 +20,7 @@ export default function BookDetailPanel({ book, isOpen, setIsOpen }: BookDetailP
       {/* 2. THE PANEL */}
       <aside className={`
         fixed z-[70] bg-light-bg dark:bg-nature-bg shadow-2xl
-        transition-all duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]
+        transition-all duration-200 ease-[cubic-bezier(0.4,0,0.2,1)]
         inset-x-0 bottom-0 rounded-t-[32px] border-t border-black/10
         ${isOpen ? 'h-[85vh] translate-y-0' : 'h-0 translate-y-full'}
         xl:top-0 xl:right-0 xl:bottom-0 xl:left-auto xl:h-screen xl:rounded-none xl:border-l
