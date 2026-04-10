@@ -4,10 +4,12 @@ import { api } from '../../utils/api';
 interface Collection {
   id: number;
   name: string;
+  image_url?: string; // Assuming your API provides a cover for the collection
+  description?: string;
 }
 
 interface CollectionsBarProps {
-  active: string | number;
+  active: string | number; // Add this line
   setActive: (id: string | number) => void;
 }
 
@@ -29,59 +31,63 @@ export default function CollectionsBar({ active, setActive }: CollectionsBarProp
         setLoading(false);
       }
     };
-
     fetchCollections();
   }, []);
 
   if (loading) {
     return (
-      <div className="flex gap-3 px-8 py-2 animate-pulse">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 px-8 py-4 animate-pulse">
         {[1, 2, 3, 4].map((i) => (
-          <div key={i} className="h-8 w-24 bg-black/5 dark:bg-white/5 rounded-full" />
+          <div key={i} className="space-y-3">
+             <div className="aspect-[4/5] bg-black/5 dark:bg-white/5 rounded-2xl" />
+             <div className="h-3 w-3/4 bg-black/5 dark:bg-white/5 rounded" />
+          </div>
         ))}
       </div>
     );
   }
 
   return (
-    <div className="flex items-center gap-3 px-6 overflow-x-auto no-scrollbar py-4">
-      {/* 1. Static "All" Button */}
-      <button
-        onClick={() => setActive('All')}
-        className={`
-          whitespace-nowrap px-4 py-1.5  rounded-sm text-[10px] font-black uppercase tracking-[0.15em] 
-          transition-all duration-300 border
-          ${active === 'All' 
-            ? 'bg-nature-sage text-nature-cream border-nature-sage shadow-md scale-105' 
-            : 'bg-transparent border-black/10 dark:border-white/10 hover:border-black/30'
-          }
-        `}
-      >
-        All
-      </button>
+    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 px-8 py-4">
+      {collections.map((col) => (
+        <button
+          key={col.id}
+          onClick={() => setActive(col.id)}
+          className="group text-left space-y-4"
+        >
+          {/* Visual Container */}
+          <div className="
+            relative aspect-[4/5] bg-nature-sage/5 border border-black/5 
+            rounded-3xl overflow-hidden transition-all duration-500
+            group-hover:shadow-2xl group-hover:border-nature-sage/30
+          ">
+            {col.image_url ? (
+              <img 
+                src={col.image_url} 
+                alt={col.name}
+                className="w-full h-full object-cover grayscale-[0.5] group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700"
+              />
+            ) : (
+              <div className="w-full h-full flex items-center justify-center bg-nature-sage/10 text-4xl font-black opacity-10">
+                {col.name[0]}
+              </div>
+            )}
 
-      {/* 2. Dynamic Collection Buttons from API */}
-      {collections.map((col) => {
-        const isActive = active === col.id;
-        
-        return (
-          <button
-            key={col.id}
-            onClick={() => setActive(col.id)}
-            className={`
-              whitespace-nowrap px-6 py-1.5  border-black dark:border-nature-cream/30
-              rounded-sm text-[10px] font-black uppercase tracking-[0.15em] 
-              transition-all duration-300 border
-              ${isActive 
-                ? 'bg-nature-sage text-nature-cream border-nature-sage shadow-md scale-105' 
-                : 'bg-transparent border-black/10 dark:border-white/10 hover:border-black/30'
-              }
-            `}
-          >
-            {col.name}
-          </button>
-        );
-      })}
+            {/* Subtle Overlay to make text readable if needed */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+          </div>
+
+          {/* Labeling */}
+          <div className="space-y-1">
+            <h3 className="text-xs font-black uppercase tracking-widest leading-tight">
+              {col.name}
+            </h3>
+            <p className="text-[9px] font-bold opacity-30 uppercase tracking-tighter">
+              Browse Collection →
+            </p>
+          </div>
+        </button>
+      ))}
     </div>
   );
 }
