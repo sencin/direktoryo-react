@@ -17,11 +17,10 @@ interface NavLinkItem {
 
 export default function Navbar() {
   return (
-    <nav className="fixed bottom-0 left-0 z-50 w-full h-16 transition-colors 
-                    /* Use your palette here */
-                    dark:bg-nature-bg
-                    bg-app-dark border-t border-app-muted/20 
-                    md:top-0 md:left-0 md:h-screen md:w-24 md:border-t-0 md:border-r">
+    <nav className="fixed bottom-0 left-0 z-50 w-full h-16 transition-colors
+dark:bg-nature-bg bg-app-dark
+border-t border-nature-sage/20
+md:top-0 md:left-0 md:h-screen md:w-24 md:border-t-0 md:border-r">
       
       <div className="flex md:flex-col items-center h-full w-full">
         
@@ -62,7 +61,7 @@ function NavIcon({ link: { label, path, icon: Icon } }: { link: NavLinkItem }) {
     <NavLink
       to={path}
       className={({ isActive }) => `
-        flex flex-col items-center gap-1 transition-all duration-200
+        flex flex-col items-center gap-1 transition-all duration-200 
         ${isActive 
           ? 'text-light-text dark:text-nature-cream scale-110' 
           : 'text-light-text/40 dark:text-nature-sage hover:text-light-text dark:hover:text-nature-cream'}
