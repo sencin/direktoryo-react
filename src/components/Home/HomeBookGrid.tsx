@@ -32,8 +32,7 @@ export default function HomeBookGrid({
           to={viewMorePath}
           className="text-[10px] font-black uppercase tracking-[0.2em] opacity-40 hover:opacity-100 transition-all flex items-center gap-2 group"
         >
-          View More 
-          <span className="transition-transform group-hover:translate-x-1">→</span>
+          View More
         </Link>
       </div>
 

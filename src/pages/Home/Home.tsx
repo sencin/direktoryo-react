@@ -122,7 +122,7 @@ useEffect(() => {
 
           {/* --- OPTION 2: COLLECTIONS ENGINE --- */}
           <section className={`${!isInsideCollection ? 'pt-8 border-t border-black/5' : ''}`}>
-            <div className="px-6 mb-4 flex justify-between items-center">
+            <div className="px-8 mb-4 flex justify-between items-center">
               <div>
                 <h2
                     className={
@@ -140,8 +140,8 @@ useEffect(() => {
                     onClick={() => setShowAllcollection(!showAllCollection)}
                     className="text-[10px] font-bold  opacity-50 uppercase tracking-widest hover:opacity-100 transition-opacity"
                   >
-                    {showAllCollection ? 'Show Less ' : 'View More '}
-                <span className="transition-transform group-hover:translate-x-1">→</span>
+                    {showAllCollection ? 'Show Less ' : 'View More'}
+       
                   </button>
                 )}
 

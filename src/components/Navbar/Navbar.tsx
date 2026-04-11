@@ -27,7 +27,11 @@ md:top-0 md:left-0 md:h-screen md:w-24 md:border-t-0 md:border-r">
         {/* 1. LOGO: Swapped blue for app-cream */}
         <div className="hidden md:flex items-center justify-center h-24 w-full">
           <div className="bg-app-cream p-2 rounded-xl text-app-dark shadow-lg shadow-black/20">
-            <Zap size={28} fill="currentColor" />
+            <img 
+              src="/icons/direktoryo.svg" 
+              alt="Logo"
+              className="w-7 h-7 object-contain"
+            />
           </div>
         </div>
 
