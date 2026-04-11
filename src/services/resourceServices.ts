@@ -14,6 +14,7 @@ const mapResourceToBook = (item: any) => {
   };
 };
 
+
 export const ResourceService = {
   fetchAllResource: async () => {
     try {
@@ -49,6 +50,32 @@ export const ResourceService = {
 
     } catch (error) {
       console.error('Fetch by category failed:', error);
+      return [];
+    }
+  },
+
+  search: async (searchTerm: string, categoryId?: number | string) => {
+    try {
+  
+      let endpoint = `/resources?search=${encodeURIComponent(searchTerm)}`;
+      
+      if (categoryId) {
+        endpoint += `&category_id=${categoryId}`;
+      }
+
+      const response = await api.get(endpoint);
+
+      const data =
+        response?.data?.data ??
+        response?.data ??
+        [];
+
+      return Array.isArray(data)
+        ? data.map(mapResourceToBook)
+        : [];
+
+    } catch (error) {
+      console.error('Search query failed:', error);
       return [];
     }
   }
