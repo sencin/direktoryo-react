@@ -17,7 +17,8 @@ export default function Home() {
   const collectionCache = useRef<Record<string, any[]>>({});
   const [resourceBooks, setResourceBooks] = useState<any[]>([]);
   const isInsideCollection = activeCollection !== 'All';
-
+  const [isResourceLoading, setIsResourceLoading] = useState(false);
+  
 
   const handleBookClick = (book: any) => {
     setSelectedBook(book);
@@ -65,6 +66,8 @@ export default function Home() {
 
 useEffect(() => {
   const loadData = async () => {
+    setIsResourceLoading(true)
+    
     try {
       if (activeCategory === 'all') {
         const resourceBooks = await ResourceService.fetchAllResource();
@@ -80,6 +83,9 @@ useEffect(() => {
     } catch (error) {
       console.error('Failed to load resources:', error);
       setResourceBooks([]);
+    }
+      finally{
+      setIsResourceLoading(false);
     }
   };
 
@@ -99,19 +105,13 @@ useEffect(() => {
               <div className="px-8 flex justify-between items-end">
                 <h2 className="text-[10px] font-black uppercase tracking-[0.3em] opacity-30">Quick Filter</h2>
               </div>
-
+                <CategoryBar active={activeCategory} setActive={setActiveCategory} />
               {/* SKELETON LOGIC */}
-              {isLoading ? (
+               {isResourceLoading ? (
                 <div className="space-y-6">
-                  {/* Category Bar Skeleton */}
-                  <div className="flex gap-3 px-8 overflow-hidden">
-                    {[1, 2, 3, 4, 5].map((i) => (
-                      <div key={i} className="h-8 w-20 bg-black/5 dark:bg-white/5 rounded-sm animate-pulse" />
-                    ))}
-                  </div>
                   
                   {/* Book Grid Skeleton */}
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-6 px-8 mt-6">
+                  <div className="grid grid-cols-3 md:grid-cols-8 gap-6 px-8 mt-6">
                     {[1, 2, 3, 4].map((i) => (
                       <div key={i} className="space-y-3 animate-pulse">
                         <div className="aspect-[3/4] bg-black/5 dark:bg-white/5 rounded-2xl" />
@@ -123,7 +123,7 @@ useEffect(() => {
                 </div>
               ) : (
                 <>
-                  <CategoryBar active={activeCategory} setActive={setActiveCategory} />
+                 
                   <div className="mt-4">
                     <BookGrid 
                       title={"Resources"}
