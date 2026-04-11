@@ -6,6 +6,7 @@ import BookDetailPanel from '../../components/Home/BookDetailPanel';
 import CollectionsBar from '../../components/Home/CollectionsBar';
 import { CollectionService } from '../../services/collectionService';
 import { ResourceService } from '../../services/resourceServices';
+import HomeBookGrid from '../../components/Home/HomeBookGrid';
 
 export default function Home() {
   const [activeCategory, setActiveCategory] = useState<number | 'all'>('all');
@@ -107,11 +108,13 @@ useEffect(() => {
                 <CategoryBar active={activeCategory} setActive={setActiveCategory} />
               {/* SKELETON LOGIC */}        
                  <div className="mt-4">
-                    <BookGrid 
-                      title="Resources"
+                    <HomeBookGrid 
+                      title="Featured Resources"
                       books={resourceBooks}
-                      loading={isResourceLoading}   // 👈 pass loading here
-                      onBookClick={handleBookClick} 
+                      loading={isResourceLoading}
+                      onBookClick={handleBookClick}
+                      // Where the "More" link goes (e.g., your search/browse page)
+                      viewMorePath="/browse" 
                     />
                   </div>
             </section>
@@ -125,7 +128,7 @@ useEffect(() => {
                     className={
                       isInsideCollection
                         ? "text-[7px] font-black tracking-[0.3em] opacity-30 mb-1"
-                        : "text-sm tracking-widest"
+                        : "text-sm uppercase tracking-widest"
                     }
                   >
                     {isInsideCollection ? "Viewing Collection" : "Browse by Collection"}
@@ -135,9 +138,10 @@ useEffect(() => {
               {!isInsideCollection && (
                   <button 
                     onClick={() => setShowAllcollection(!showAllCollection)}
-                    className="text-[10px] font-bold underline opacity-50 uppercase tracking-widest hover:opacity-100 transition-opacity"
+                    className="text-[10px] font-bold  opacity-50 uppercase tracking-widest hover:opacity-100 transition-opacity"
                   >
-                    {showAllCollection ? 'Show Less' : 'View More'}
+                    {showAllCollection ? 'Show Less ' : 'View More '}
+                <span className="transition-transform group-hover:translate-x-1">→</span>
                   </button>
                 )}
 

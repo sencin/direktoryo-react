@@ -62,7 +62,7 @@ export default function CategoryBar({ active, setActive }: CategoryBarProps) {
     <div className="
       flex items-center gap-3 px-6 py-4 
       overflow-x-auto no-scrollbar 
-      bg-transparent border-b border-black/10 dark:border-white/10
+      bg-transparent  border-black/10 dark:border-white/10
     ">
       {/* Everything button */}
       <button
@@ -75,7 +75,7 @@ export default function CategoryBar({ active, setActive }: CategoryBarProps) {
             : 'bg-transparent border-black/20 dark:border-nature-cream/30 hover:bg-black/5'}
         `}
       >
-        Everything
+        All
       </button>
 
       {categories.map((category) => {
