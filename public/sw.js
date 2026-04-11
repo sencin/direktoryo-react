@@ -1,4 +1,4 @@
-const CACHE_NAME = "direktoryo-cache-v2";
+const CACHE_NAME = "direktoryo-cache-v2.0.1";
 
 const STATIC_ASSETS = [
   "/",

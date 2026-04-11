@@ -7,13 +7,13 @@ interface Collection {
   image_url?: string; // Assuming your API provides a cover for the collection
   description?: string;
 }
-
 interface CollectionsBarProps {
-  active: string | number; // Add this line
+  active: string | number;
   setActive: (id: string | number) => void;
+  limit?: number; // Add this optional prop
 }
 
-export default function CollectionsBar({setActive }: CollectionsBarProps) {
+export default function CollectionsBar({ setActive, limit }: CollectionsBarProps) {
   const [collections, setCollections] = useState<Collection[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -34,33 +34,33 @@ export default function CollectionsBar({setActive }: CollectionsBarProps) {
     fetchCollections();
   }, []);
 
+  // Slice the data if a limit is provided
+  const displayedCollections = limit ? collections.slice(0, limit) : collections;
+
   if (loading) {
+    // Adjusted skeleton count to match the limit if provided
+    const skeletonCount = limit || 8;
     return (
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-8 gap-6 px-8 py-4 animate-pulse">
-        {[1, 2, 3, 4].map((i) => (
+        {[...Array(skeletonCount)].map((_, i) => (
           <div key={i} className="space-y-3">
              <div className="aspect-[4/5] bg-black/5 dark:bg-white/5 rounded-2xl" />
-             <div className="h-3 w-3/4 bg-black/5 dark:bg-white/5 rounded" />
+             <div className="h-2 w-3/4 bg-black/5 dark:bg-white/5 rounded" />
           </div>
         ))}
       </div>
     );
   }
-
+  
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-8 gap-8 px-8 py-4">
-      {collections.map((col) => (
+      {displayedCollections.map((col) => (
         <button
           key={col.id}
           onClick={() => setActive(col.id)}
           className="group text-left space-y-4"
         >
-          {/* Visual Container */}
-          <div className="
-            relative aspect-[4/5] bg-nature-sage/5 border border-black/5 
-            rounded-3xl overflow-hidden transition-all duration-500
-            group-hover:shadow-2xl group-hover:border-nature-sage/30
-          ">
+          <div className="relative aspect-[4/5] bg-nature-sage/5 border border-black/5 rounded-3xl overflow-hidden transition-all duration-500 group-hover:shadow-2xl group-hover:border-nature-sage/30">
             {col.image_url ? (
               <img 
                 src={col.image_url} 
@@ -72,12 +72,9 @@ export default function CollectionsBar({setActive }: CollectionsBarProps) {
                 {col.name[0]}
               </div>
             )}
-
-            {/* Subtle Overlay to make text readable if needed */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
           </div>
 
-          {/* Labeling */}
           <div className="space-y-1">
             <h3 className="text-xs font-black uppercase tracking-widest leading-tight">
               {col.name}

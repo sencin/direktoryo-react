@@ -17,7 +17,7 @@ export default function Home() {
   const [resourceBooks, setResourceBooks] = useState<any[]>([]);
   const isInsideCollection = activeCollection !== 'All';
   const [isResourceLoading, setIsResourceLoading] = useState(false);
-  
+  const [showAllCollection, setShowAllcollection] = useState(false);
 
   const handleBookClick = (book: any) => {
     setSelectedBook(book);
@@ -131,6 +131,15 @@ useEffect(() => {
                     {isInsideCollection ? "Viewing Collection" : "Browse by Collection"}
                   </h2>
               </div>
+              
+              {!isInsideCollection && (
+                  <button 
+                    onClick={() => setShowAllcollection(!showAllCollection)}
+                    className="text-[10px] font-bold underline opacity-50 uppercase tracking-widest hover:opacity-100 transition-opacity"
+                  >
+                    {showAllCollection ? 'Show Less' : 'View More'}
+                  </button>
+                )}
 
               {isInsideCollection && (
                 <button 
@@ -144,7 +153,7 @@ useEffect(() => {
 
             {!isInsideCollection ? (
               /* THE MENU GRID */
-              <CollectionsBar active={activeCollection} setActive={setActiveCollection} />
+              <CollectionsBar active={activeCollection} setActive={setActiveCollection}  limit={showAllCollection ? undefined : 8}/>
             ) : (
               /* THE FILTERED RESULTS */
               <div className="animate-in fade-in zoom-in-95 duration-500">
