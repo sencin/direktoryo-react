@@ -5,44 +5,49 @@ interface BookGridProps {
   onBookClick: (book: any) => void;
 }
 
+export default function BookGrid({
+  title,
+  books = [],
+  loading = false,
+  onBookClick,
+}: BookGridProps) {
+  const hasBooks = books.length > 0;
 
-export default function BookGrid({title, books, loading, onBookClick  }: BookGridProps) {
-  
-  if (!loading && books.length === 0) {
-    return (
-      <section className="px-8">
-        <div className="flex justify-between items-end mb-8">
-          <h3 className="text-md tracking-widest">{title}</h3>
-        </div>
+  const isActuallyLoading = loading || (books.length === 0 && title !== "Recent Resources");
 
-        <div className="text-center opacity-30 text-xs uppercase tracking-widest py-10">
-          No resources found
-        </div>
-      </section>
-    );
-  }
-  
   return (
     <section className="px-8">
+
+      {/* HEADER ALWAYS RENDERED */}
       <div className="flex justify-between items-end mb-8">
         <h3 className="text-md tracking-widest">{title}</h3>
-        <button className="text-[10px] font-bold underline opacity-50 uppercase tracking-widest">more</button>
-      </div>
-      
 
+        {!loading && hasBooks && (
+          <button className="text-[10px] font-bold underline opacity-50 uppercase tracking-widest">
+            more
+          </button>
+        )}
+      </div>
+
+      {/* GRID ALWAYS EXISTS (IMPORTANT) */}
       <div className="grid grid-cols-3 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-10 gap-x-6 gap-y-10">
 
+        {/* SKELETON OVERLAY (always rendered during loading) */}
+        {loading && (
+          <>
+            {[...Array(8)].map((_, i) => (
+              <div key={`skeleton-${i}`} className="space-y-3 animate-pulse">
+                <div className="aspect-[2/3] bg-black/5 dark:bg-white/5 rounded-2xl" />
+                <div className="h-3 w-3/4 bg-black/5 dark:bg-white/5 rounded" />
+                <div className="h-2 w-1/2 bg-black/5 dark:bg-white/5 rounded opacity-50" />
+              </div>
+            ))}
+          </>
+        )}
 
-      {loading ? (
-          [...Array(8)].map((_, i) => (
-            <div key={i} className="space-y-3 animate-pulse">
-              <div className="aspect-[2/3] bg-black/5 dark:bg-white/5 rounded-2xl" />
-              <div className="h-3 w-3/4 bg-black/5 dark:bg-white/5 rounded" />
-              <div className="h-2 w-1/2 bg-black/5 dark:bg-white/5 rounded opacity-50" />
-            </div>
-          ))
-        ) : (
-          /* 🔥 NORMAL MODE */
+        {/* DATA (replaces visually, but no layout shift) */}
+        {!isActuallyLoading &&
+          hasBooks &&
           books.map((book) => (
             <div
               key={book.id}
@@ -50,7 +55,7 @@ export default function BookGrid({title, books, loading, onBookClick  }: BookGri
               className="cursor-pointer group flex flex-col"
             >
               <div className="aspect-[2/3] bg-nature-sage/10 mb-4 border border-black/10 dark:border-white/10 relative overflow-hidden shadow-sm transition-all group-hover:-translate-y-2 group-hover:shadow-xl group-hover:border-nature-sage/30">
-                
+
                 {book.image_url ? (
                   <img
                     src={book.image_url}
@@ -67,19 +72,24 @@ export default function BookGrid({title, books, loading, onBookClick  }: BookGri
                     </div>
                   </div>
                 )}
-
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
               </div>
 
-              <p className="text-xs font-bold leading-tight uppercase tracking-tighter mb-1 truncate">
+              <p className="text-xs font-bold uppercase truncate">
                 {book.title}
               </p>
-              <p className="text-[10px] opacity-60 font-medium truncate">
+              <p className="text-[10px] opacity-60 truncate">
                 {book.author}
               </p>
             </div>
-          ))
+          ))}
+
+        {/* EMPTY STATE (only when not loading) */}
+        {!loading && !hasBooks && (
+          <div className="col-span-full text-center opacity-30 text-xs uppercase tracking-widest py-10">
+            No resources found
+          </div>
         )}
+
       </div>
     </section>
   );

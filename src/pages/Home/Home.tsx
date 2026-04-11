@@ -26,37 +26,40 @@ export default function Home() {
   };
 
 
- useEffect(() => {
+useEffect(() => {
   const loadData = async () => {
-    if (activeCollection === 'All') return;
-
     const key = activeCollection.toString();
+    if (key === 'All') return;
 
-    // ✅ Show cached instantly (if exists)
+    // 1. IMMEDIATELY tell the UI we are switching
+    // This stops the BookGrid from rendering old books
+    setIsLoading(true);
+
+    // 2. Check cache
     if (collectionCache.current[key]) {
-      setCollectionBooks(collectionCache.current[key]);
+      const cachedBooks = collectionCache.current[key];
+      setCollectionBooks(cachedBooks);
+      
+      // If we want it to feel "Instant", we flip loading off immediately.
+      // React batches these two sets, so the UI jumps straight to new data.
+      setIsLoading(false); 
     } else {
+      // No cache? Clear the UI so we don't see Category A's books
       setCollectionBooks([]);
-      setIsLoading(true);
     }
 
     try {
       const books = await CollectionService.getCollectionBooks(key);
-
-      // ✅ Update cache
       collectionCache.current[key] = books;
 
-      // ✅ Update UI (only if changed to avoid unnecessary re-render)
       setCollectionBooks(prev => {
         const isSame = JSON.stringify(prev) === JSON.stringify(books);
         return isSame ? prev : books;
       });
-
-      console.log("Refetch Success")
-
     } catch (err) {
       console.error(err);
     } finally {
+      // This ensures loading turns off after the API call (if not already off)
       setIsLoading(false);
     }
   };
