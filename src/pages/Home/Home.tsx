@@ -14,7 +14,6 @@ export default function Home() {
   const [collectionBooks, setCollectionBooks] = useState<any[]>([]);
   const [activeCollection, setActiveCollection] = useState<string | number>('All');
   const [isLoading, setIsLoading] = useState(false);
-  const collectionCache = useRef<Record<string, any[]>>({});
   const [resourceBooks, setResourceBooks] = useState<any[]>([]);
   const isInsideCollection = activeCollection !== 'All';
   const [isResourceLoading, setIsResourceLoading] = useState(false);
