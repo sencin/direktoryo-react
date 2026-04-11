@@ -21,12 +21,6 @@ export default function BookGrid({
       {/* HEADER ALWAYS RENDERED */}
       <div className="flex justify-between items-end mb-8">
         <h3 className="text-md tracking-widest">{title}</h3>
-
-        {!loading && hasBooks && (
-          <button className="text-[10px] font-bold underline opacity-50 uppercase tracking-widest">
-            more
-          </button>
-        )}
       </div>
 
       {/* GRID ALWAYS EXISTS (IMPORTANT) */}
