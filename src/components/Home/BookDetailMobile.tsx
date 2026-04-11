@@ -1,6 +1,20 @@
 import { Download, Bookmark, List, ArrowLeft, Share2 } from 'lucide-react';
+import { useEffect } from 'react';
 
 export default function BookDetailMobile({ book, isOpen, setIsOpen }: any) {
+
+    useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    // Cleanup to ensure scroll is restored if component unmounts
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isOpen]);
+  
   return (
     <aside
       className={`

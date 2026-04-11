@@ -1,6 +1,19 @@
 import { X, Download, Bookmark, List } from 'lucide-react';
+import { useEffect } from 'react';
 
 export default function BookDetailDesktop({ book, isOpen, setIsOpen }: any) {
+      useEffect(() => {
+        if (isOpen) {
+          document.body.style.overflow = 'hidden';
+        } else {
+          document.body.style.overflow = 'unset';
+        }
+        // Cleanup to ensure scroll is restored if component unmounts
+        return () => {
+          document.body.style.overflow = 'unset';
+        };
+      }, [isOpen]);
+      
   return (
     <aside className={`
       fixed z-[70] bg-light-bg dark:bg-nature-bg shadow-2xl top-0 right-0 bottom-0 border-l border-black/10
