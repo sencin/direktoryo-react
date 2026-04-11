@@ -40,7 +40,7 @@ export default function BookDetailDesktop({ book, isOpen, setIsOpen }: any) {
 
             {/* CTA (Your original UI) */}
               <a
-                href={book.url || '#'}
+                href={book?.url || '#'}
                 target="_blank"
                 className="block w-full py-5 bg-nature-sage text-center text-nature-cream text-[10px] font-black uppercase tracking-widest"
               >
