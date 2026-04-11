@@ -79,7 +79,7 @@ export default function BookDetailMobile({ book, isOpen, setIsOpen }: any) {
               </a>
 
               {/* ACTIONS (Your original UI) */}
-              <div className="grid grid-cols-3 border divide-x rounded-xl border-black/10 divide-black/10">
+              <div className="grid grid-cols-3 border  rounded-xl border-black/10  dark:border-white/10 divide-x divide-black/10 dark:divide-white/10 ">
                 <button className="py-4 flex flex-col items-center gap-1">
                   <Download size={18} />
                   <span className="text-[9px] font-bold uppercase tracking-tighter">Download</span>
@@ -90,7 +90,7 @@ export default function BookDetailMobile({ book, isOpen, setIsOpen }: any) {
                 </button>
                 <button className="py-4 flex flex-col items-center gap-1">
                   <List size={18} />
-                  <span className="text-[9px] font-bold uppercase tracking-tighter">List</span>
+                  <span className="text-[9px] font-bold uppercase tracking-tighter">Add to List</span>
                 </button>
               </div>
 

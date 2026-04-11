@@ -23,7 +23,7 @@ export default function BookDetailDesktop({ book, isOpen, setIsOpen }: any) {
     `}>
       <div className="p-10 space-y-8 h-full overflow-y-auto no-scrollbar">
         <div className="flex justify-between items-center">
-          <span className="text-[10px] font-black uppercase tracking-[0.3em] opacity-40">Resource Profile</span>
+          <span className="text-[10px] font-black uppercase tracking-[0.3em]">Resource Details</span>
           <button onClick={() => setIsOpen(false)} className="p-2 hover:bg-black/5 rounded-full transition-colors">
             <X size={20} className="opacity-40" />
           </button>
@@ -38,19 +38,25 @@ export default function BookDetailDesktop({ book, isOpen, setIsOpen }: any) {
           <p className="text-sm font-medium opacity-60">Curated by <span className="underline decoration-nature-sage decoration-2">{book?.author}</span></p>
         </div>
 
-        <div className="grid grid-cols-3 border border-black/10 divide-x divide-black/10 rounded-xl">
+            {/* CTA (Your original UI) */}
+              <a
+                href={book.url || '#'}
+                target="_blank"
+                className="block w-full py-5 bg-nature-sage text-center text-nature-cream text-[10px] font-black uppercase tracking-widest"
+              >
+                Visit Official Website
+              </a>
+              
+        <div className="grid grid-cols-3 border border-black/10 rounded-xl dark:border-white/10 divide-x divide-black/10 dark:divide-white/10 ">
            <button className="flex flex-col items-center gap-2 py-4 hover:bg-black/5 transition-colors"><Download size={18} /><span className="text-[9px] font-bold uppercase">Get</span></button>
            <button className="flex flex-col items-center gap-2 py-4 hover:bg-black/5 transition-colors"><Bookmark size={18} /><span className="text-[9px] font-bold uppercase">Save</span></button>
-           <button className="flex flex-col items-center gap-2 py-4 hover:bg-black/5 transition-colors"><List size={18} /><span className="text-[9px] font-bold uppercase">Track</span></button>
+           <button className="flex flex-col items-center gap-2 py-4 hover:bg-black/5 transition-colors"><List size={18} /><span className="text-[9px] font-bold uppercase">Add to list</span></button>
         </div>
 
         <p className="text-xs leading-relaxed opacity-70 font-medium italic border-l-2 border-nature-sage pl-4">
           {book?.description}
         </p>
 
-        <a href={book?.url} target="_blank" className="block w-full py-5 bg-nature-sage text-nature-cream text-center text-[10px] font-black uppercase tracking-[0.2em] hover:scale-[1.02] transition-transform">
-          Open Project Portal
-        </a>
       </div>
     </aside>
   );
