@@ -36,6 +36,7 @@ export default function Home() {
     if (collectionCache.current[key]) {
       setCollectionBooks(collectionCache.current[key]);
     } else {
+      setCollectionBooks([]);
       setIsLoading(true);
     }
 
@@ -111,7 +112,7 @@ useEffect(() => {
                     <BookGrid 
                       title="Resources"
                       books={resourceBooks}
-                      loading={isResourceLoading}   // 👈 pass loading here
+                      loading={isResourceLoading}   
                       onBookClick={handleBookClick} 
                     />
                   </div>
@@ -143,23 +144,19 @@ useEffect(() => {
               )}
             </div>
 
-            {!isInsideCollection ? (
-              /* THE MENU GRID */
-              <CollectionsBar active={activeCollection} setActive={setActiveCollection} />
+          {!isInsideCollection ? (
+              <CollectionsBar 
+                active={activeCollection} 
+                setActive={setActiveCollection} 
+              />
             ) : (
-              /* THE FILTERED RESULTS */
               <div className="animate-in fade-in zoom-in-95 duration-500">
-                {isLoading ? (
-                  <div className="px-8 py-20 text-center opacity-20 animate-pulse font-black text-[10px] uppercase tracking-[0.5em]">
-                    Fetching Archive...
-                  </div>
-                ) : (
-                  <BookGrid 
-                    title="Collection Results"
-                    books={collectionBooks} 
-                    onBookClick={handleBookClick} 
-                  />
-                )}
+                <BookGrid 
+                  title="Collection Results"
+                  books={collectionBooks} 
+                  loading={isLoading}   // 👈 ONLY source of truth
+                  onBookClick={handleBookClick} 
+                />
               </div>
             )}
           </section>
