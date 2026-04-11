@@ -27,44 +27,41 @@ export default function Home() {
 
 
 useEffect(() => {
-  const loadData = async () => {
-    const key = activeCollection.toString();
-    if (key === 'All') return;
+  // If 'All' is selected, we clear and stop
+  if (activeCollection === 'All') {
+    setCollectionBooks([]);
+    return;
+  }
 
-    // 1. IMMEDIATELY tell the UI we are switching
-    // This stops the BookGrid from rendering old books
+  // A flag to prevent state updates if the user closes the collection mid-fetch
+  let isMounted = true;
+
+  const loadData = async () => {
+    // 1. Reset UI instantly (Wipe previous data)
+    setCollectionBooks([]); 
     setIsLoading(true);
 
-    // 2. Check cache
-    if (collectionCache.current[key]) {
-      const cachedBooks = collectionCache.current[key];
-      setCollectionBooks(cachedBooks);
-      
-      // If we want it to feel "Instant", we flip loading off immediately.
-      // React batches these two sets, so the UI jumps straight to new data.
-      setIsLoading(false); 
-    } else {
-      // No cache? Clear the UI so we don't see Category A's books
-      setCollectionBooks([]);
-    }
-
     try {
-      const books = await CollectionService.getCollectionBooks(key);
-      collectionCache.current[key] = books;
+      const books = await CollectionService.getCollectionBooks(activeCollection.toString());
 
-      setCollectionBooks(prev => {
-        const isSame = JSON.stringify(prev) === JSON.stringify(books);
-        return isSame ? prev : books;
-      });
+      if (isMounted) {
+        setCollectionBooks(books);
+      }
     } catch (err) {
-      console.error(err);
+      console.error("Fetch failed:", err);
     } finally {
-      // This ensures loading turns off after the API call (if not already off)
-      setIsLoading(false);
+      if (isMounted) setIsLoading(false);
     }
   };
 
   loadData();
+
+  // 2. THE CLEANUP: This runs when activeCollection changes OR the component closes
+  return () => {
+    isMounted = false;
+    setCollectionBooks([]); // "Delete" the data from memory
+    setIsLoading(false);
+  };
 }, [activeCollection]);
 
 
@@ -115,7 +112,7 @@ useEffect(() => {
                     <BookGrid 
                       title="Resources"
                       books={resourceBooks}
-                      loading={isResourceLoading}   
+                      loading={isResourceLoading}   // 👈 pass loading here
                       onBookClick={handleBookClick} 
                     />
                   </div>
@@ -147,19 +144,23 @@ useEffect(() => {
               )}
             </div>
 
-          {!isInsideCollection ? (
-              <CollectionsBar 
-                active={activeCollection} 
-                setActive={setActiveCollection} 
-              />
+            {!isInsideCollection ? (
+              /* THE MENU GRID */
+              <CollectionsBar active={activeCollection} setActive={setActiveCollection} />
             ) : (
+              /* THE FILTERED RESULTS */
               <div className="animate-in fade-in zoom-in-95 duration-500">
-                <BookGrid 
-                  title="Collection Results"
-                  books={collectionBooks} 
-                  loading={isLoading}   // 👈 ONLY source of truth
-                  onBookClick={handleBookClick} 
-                />
+                {isLoading ? (
+                  <div className="px-8 py-20 text-center opacity-20 animate-pulse font-black text-[10px] uppercase tracking-[0.5em]">
+                    Fetching Archive...
+                  </div>
+                ) : (
+                  <BookGrid 
+                    title="Collection Results"
+                    books={collectionBooks} 
+                    onBookClick={handleBookClick} 
+                  />
+                )}
               </div>
             )}
           </section>
