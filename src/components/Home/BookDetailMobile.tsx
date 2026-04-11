@@ -26,7 +26,7 @@ export default function BookDetailMobile({ book, isOpen, setIsOpen }: any) {
         </button>
       </div>
 
-      <div className={`h-full overflow-y-auto ${isOpen ? 'opacity-100' : 'opacity-0'}`}>
+      <div className={`h-full overflow-y-auto`}>
         <div className="p-6 space-y-8 pb-24">
 
           {book ? (
