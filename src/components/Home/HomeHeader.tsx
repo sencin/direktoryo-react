@@ -1,24 +1,23 @@
-import { Menu, Bell, Search, User, ChevronDown } from 'lucide-react';
+import { Menu, Bell, User, ChevronDown } from 'lucide-react';
+import SearchBar from './SearchBar';
+
 
 export default function HomeHeader() {
   return (
     <>
       {/* --- DESKTOP VIEW (Visible md and up) --- */}
-      <header className="hidden md:flex items-center h-16 border-b border-black/10 dark:border-white/10">
+    <header className="hidden md:flex items-stretch h-16 border-b border-black/10 dark:border-white/10">
         {/* Search Bar - Matches the Yellow Theme */}
-        <div className="flex-1 flex items-center px-6 h-full border-r border-black/10 dark:border-white/10 bg-nature-bg text-nature-cream">
-          <Search size={18} className="text-nature-cream mr-4" />
-          <input 
-            type="text" 
-            placeholder="Title, author, host, or topic"
-            className="bg-nature-bg w-full outline-none font-bold text-sm tracking-tight "
-          />
+          <div className="flex-1 px-4 max-w-xl">
+          <SearchBar />
         </div>
         
-        {/* User Profile Section */}
-        <div className="flex items-center gap-3 px-6 h-full border-r border-black/10 dark:border-white/10">
+         <div className="flex items-stretch ml-auto">
+    
+        {/* User Profile */}
+        <div className="flex items-center gap-3 px-6  border-r border-black/10 dark:border-r-nature-nav">
           <div className="w-8 h-8 bg-nature-sage rounded-full flex items-center justify-center overflow-hidden border border-black/10">
-             <User size={20} className="text-nature-cream" />
+            <User size={20} className="text-nature-cream" />
           </div>
           <div className="text-left hidden lg:block">
             <p className="text-[11px] font-bold leading-none uppercase tracking-tighter">Bruce Wayne</p>
@@ -27,10 +26,12 @@ export default function HomeHeader() {
           <ChevronDown size={14} className="opacity-40" />
         </div>
 
-        {/* Global Notifications */}
-        <button className="px-6 h-full flex items-center hover:bg-black/5 dark:hover:bg-white/5 transition-colors">
+        {/* Notifications */}
+        <button className="px-6 flex items-center hover:bg-black/5 dark:hover:bg-white/5 transition-colors">
           <Bell size={20} />
         </button>
+
+      </div>
       </header>
 
       {/* --- MOBILE VIEW (Visible below md) --- */}

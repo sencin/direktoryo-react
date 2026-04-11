@@ -94,7 +94,7 @@ useEffect(() => {
 
   return (
     <div className="flex flex-col min-h-screen bg-light-bg dark:bg-nature-bg text-light-text dark:text-nature-cream transition-colors duration-300">
-      <HomeHeader />
+     <HomeHeader />
 
       <div className="flex flex-1 overflow-hidden relative">
         <main className="flex-1 overflow-y-auto no-scrollbar space-y-8 py-4">
