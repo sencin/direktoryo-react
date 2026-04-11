@@ -106,33 +106,15 @@ useEffect(() => {
                 <h2 className="text-[10px] font-black uppercase tracking-[0.3em] opacity-30">Quick Filter</h2>
               </div>
                 <CategoryBar active={activeCategory} setActive={setActiveCategory} />
-              {/* SKELETON LOGIC */}
-               {isResourceLoading ? (
-                <div className="space-y-6">
-                  
-                  {/* Book Grid Skeleton */}
-                  <div className="grid grid-cols-3 md:grid-cols-8 gap-6 px-8 mt-6">
-                    {[1, 2, 3, 4].map((i) => (
-                      <div key={i} className="space-y-3 animate-pulse">
-                        <div className="aspect-[3/4] bg-black/5 dark:bg-white/5 rounded-2xl" />
-                        <div className="h-3 w-3/4 bg-black/5 dark:bg-white/5 rounded" />
-                        <div className="h-2 w-1/2 bg-black/5 dark:bg-white/5 rounded opacity-50" />
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              ) : (
-                <>
-                 
-                  <div className="mt-4">
+              {/* SKELETON LOGIC */}        
+                 <div className="mt-4">
                     <BookGrid 
-                      title={"Resources"}
-                      books={resourceBooks} 
+                      title="Resources"
+                      books={resourceBooks}
+                      loading={isResourceLoading}   // 👈 pass loading here
                       onBookClick={handleBookClick} 
                     />
                   </div>
-                </>
-              )}
             </section>
           )}
 
