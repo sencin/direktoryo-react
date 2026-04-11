@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import { Home, Search, Bookmark, User, Settings, LogOut, Zap } from 'lucide-react';
+import { Home, Search, Bookmark, User, Settings, LogOut } from 'lucide-react';
 
 const MAIN_LINKS: NavLinkItem[] = [
   { label: 'Home', path: '/', icon: Home },     // Just the name
