@@ -5,15 +5,15 @@
   "display": "standalone",
   "background_color": "#0f0f0f",
   "theme_color": "#0f0f0f",
-  "description": "Internet resources, collections, and guides.",
+  "description": "Internet resources, collections, and All Searchable Internet Information.",
   "icons": [
     {
-      "src": "/icons/icon.svg",
+      "src": "/icons/direktoryo.svg",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "/icons/icon.svg",
+      "src": "/icons/direktoryo.svg",
       "sizes": "512x512",
       "type": "image/png"
     }
