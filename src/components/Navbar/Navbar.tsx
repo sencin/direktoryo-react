@@ -17,8 +17,9 @@ interface NavLinkItem {
 
 export default function Navbar() {
   return (
-    <nav className="fixed bottom-0 left-0 z-50 w-full h-16 transition-colors bg-nature-bg
+    <nav className="fixed bottom-0 left-0 z-50 w-full h-16 transition-colors 
                     /* Use your palette here */
+                    dark:bg-nature-bg
                     bg-app-dark border-t border-app-muted/20 
                     md:top-0 md:left-0 md:h-screen md:w-24 md:border-t-0 md:border-r">
       
