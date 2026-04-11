@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import HomeHeader from "../../components/Home/HomeHeader";
 import CategoryBar from '../../components/Home/CategoryBar';
 import BookGrid from '../../components/Home/BookGrid';
@@ -74,7 +74,6 @@ useEffect(() => {
         console.log(resourceBooks)
         setResourceBooks(resourceBooks);
       } else {
-        console.log("am i triggered")
         const resourceBooks = await ResourceService.fetchByCategoryId(activeCategory);
 
         console.log(resourceBooks)
