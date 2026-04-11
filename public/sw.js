@@ -6,8 +6,8 @@ const STATIC_ASSETS = [
   "/manifest.json"
 ];
 
-// Install
 self.addEventListener("install", (event) => {
+  self.skipWaiting(); // Forces the new service worker to become active immediately
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
       return cache.addAll(STATIC_ASSETS);
@@ -48,16 +48,14 @@ self.addEventListener("fetch", (event) => {
         });
         return response;
       })
-      .catch(() => {
+      .catch(async () => {
         // OFFLINE: Fallback to cache
-        return caches.match(event.request).then((cachedResponse) => {
-          if (cachedResponse) return cachedResponse;
-          
-          // If even the cache fails (e.g. navigating to a new page offline)
-          if (event.request.mode === "navigate") {
-            return caches.match("/");
-          }
-        });
+        const cachedResponse = await caches.match(event.request);
+        if (cachedResponse) return cachedResponse;
+        // If even the cache fails (e.g. navigating to a new page offline)
+        if (event.request.mode === "navigate") {
+          return caches.match("/");
+        }
       })
   );
 });
