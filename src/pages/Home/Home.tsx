@@ -103,7 +103,7 @@ const toggleSave = async (id: number) => {
     )
   );
 
-  setSelectedBook(prev =>
+  setSelectedBook((prev: { id: number; }) =>
     prev?.id === id
       ? { ...prev, is_saved: res.saved }
       : prev
