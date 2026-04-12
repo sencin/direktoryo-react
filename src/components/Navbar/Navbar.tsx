@@ -2,7 +2,7 @@ import { NavLink } from 'react-router-dom';
 import { Home, Search, Bookmark, User, Settings, LogOut } from 'lucide-react';
 
 const MAIN_LINKS: NavLinkItem[] = [
-  { label: 'Home', path: '/', icon: Home },     // Just the name
+  { label: 'Home', path: '/home', icon: Home },     // Just the name
   { label: 'Search', path: '/search', icon: Search },
   { label: 'Saved', path: '/saved', icon: Bookmark },
   { label: 'Account', path: '/account', icon: User },
