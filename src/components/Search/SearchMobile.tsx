@@ -2,16 +2,9 @@ import {
   Search as SearchIcon, Flag, BarChart2, Banknote, Rocket, Landmark,  Atom, 
   Globe, ArrowRight, Loader2, X 
 } from 'lucide-react';
+import SearchCategoryList from './SearchCategoryList';
 
 export default function SearchMobile({ query, setQuery, results, isLoading, hasSearched }: any) {
-  const categories = [
-    { name: 'Career & Growth', icon: <Flag size={20} /> },
-    { name: 'Business', icon: <BarChart2 size={20} /> },
-    { name: 'Finance & Management', icon: <Banknote size={20} /> },
-    { name: 'Contemporary Fiction', icon: <Rocket size={20} /> },
-    { name: 'Politics', icon: <Landmark size={20} /> },
-    { name: 'Social Science', icon: <Atom size={20} /> },
-  ];
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -72,14 +65,7 @@ export default function SearchMobile({ query, setQuery, results, isLoading, hasS
           </div>
         ) : (
           /* STATIC CATEGORIES */
-          <div className="divide-y divide-nature-cream/10">
-            {categories.map((cat, index) => (
-              <button key={index} className="w-full flex items-center gap-4 py-6 hover:bg-nature-nav transition-colors text-left group">
-                <span className="text-nature-sage group-hover:scale-110 transition-transform">{cat.icon}</span>
-                <span className="text-[15px] font-black tracking-tight text-nature-cream uppercase">{cat.name}</span>
-              </button>
-            ))}
-          </div>
+          <SearchCategoryList onSelect={(name) => setQuery(name)} />
         )}
       </div>
     </div>
