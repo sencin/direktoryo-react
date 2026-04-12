@@ -5,7 +5,7 @@ export default function AuthGuard({ children }: { children: React.ReactNode }) {
   const token = auth.getToken();
 
   if (token) {
-    return <Navigate to="/" replace />;
+    return <Navigate to="/home" replace />;
   }
 
   return children;

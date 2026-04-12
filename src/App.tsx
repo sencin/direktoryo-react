@@ -1,5 +1,5 @@
 import Navbar from './components/Navbar/Navbar'
-import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import Home from './pages/Home/Home';
 import Search from './pages/Search/Search';
 import Saved from './pages/Saved/Saved';
@@ -42,7 +42,9 @@ function AppLayout() {
         }`}
       >
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Navigate to="/landing" replace />} />
+
+          <Route path="/home" element={<Home />} />
           <Route path="/search" element={<Search />} />
           <Route path="/saved" element={<Saved />} />
           <Route path="/account" element={<Account />} />

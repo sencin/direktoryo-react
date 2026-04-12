@@ -35,7 +35,7 @@ export default function Landing() {
           <div className="space-y-4">
             
            <Link
-                to="/"
+                to="/home"
                 className="block w-full text-center py-4 border-2 border-nature-sage/30 rounded-xl text-[11px] font-black uppercase tracking-widest hover:bg-nature-nav transition-colors"
                 >
                 Continue with limited access
