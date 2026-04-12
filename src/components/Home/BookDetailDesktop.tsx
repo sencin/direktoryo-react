@@ -1,7 +1,7 @@
 import { X, Download, Bookmark, List } from 'lucide-react';
 import { useEffect } from 'react';
 
-export default function BookDetailDesktop({ book, isOpen, setIsOpen }: any) {
+export default function BookDetailDesktop({ book, isOpen, setIsOpen, onToggleSave }: any) {
       useEffect(() => {
         if (isOpen) {
           document.body.style.overflow = 'hidden';
@@ -14,6 +14,8 @@ export default function BookDetailDesktop({ book, isOpen, setIsOpen }: any) {
         };
       }, [isOpen]);
       
+    const isSaved = book?.is_saved;
+    
   return (
     <aside className={`
       fixed z-[70] bg-light-bg dark:bg-nature-bg shadow-2xl top-0 right-0 bottom-0 border-l border-black/10
@@ -49,7 +51,18 @@ export default function BookDetailDesktop({ book, isOpen, setIsOpen }: any) {
               
         <div className="grid grid-cols-3 border border-black/10 rounded-xl dark:border-white/10 divide-x divide-black/10 dark:divide-white/10 ">
            <button className="flex flex-col items-center gap-2 py-4 hover:bg-black/5 transition-colors"><Download size={18} /><span className="text-[9px] font-bold uppercase">Get</span></button>
-           <button className="flex flex-col items-center gap-2 py-4 hover:bg-black/5 transition-colors"><Bookmark size={18} /><span className="text-[9px] font-bold uppercase">Save</span></button>
+           <button className="flex flex-col items-center gap-2 py-4 hover:bg-black/5 transition-colors"  
+             onClick={() => onToggleSave(book?.id)}>
+              <Bookmark
+                size={18}
+                className={isSaved ? "fill-nature-sage text-nature-sage" : ""}
+              />
+
+               
+               <span className="text-[9px] font-bold uppercase tracking-tighter">
+                {book?.is_saved ? "Saved" : "Save"}
+              </span>
+           </button>
            <button className="flex flex-col items-center gap-2 py-4 hover:bg-black/5 transition-colors"><List size={18} /><span className="text-[9px] font-bold uppercase">Add to list</span></button>
         </div>
 

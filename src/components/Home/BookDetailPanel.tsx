@@ -6,9 +6,10 @@ interface Props {
   book: any;
   isOpen: boolean;
   setIsOpen: (open: boolean) => void;
+  onToggleSave?: (id: number) => Promise<void>;
 }
 
-export default function BookDetailPanel({ book, isOpen, setIsOpen }: Props) {
+export default function BookDetailPanel({ book, isOpen, setIsOpen, onToggleSave }: Props) {
   return (
     <>
       <BookDetailBackdrop isOpen={isOpen} setIsOpen={setIsOpen} />
@@ -18,6 +19,7 @@ export default function BookDetailPanel({ book, isOpen, setIsOpen }: Props) {
         book={book}
         isOpen={isOpen}
         setIsOpen={setIsOpen}
+        onToggleSave={onToggleSave}
       />
 
       {/* DESKTOP PANEL */}
@@ -25,6 +27,7 @@ export default function BookDetailPanel({ book, isOpen, setIsOpen }: Props) {
         book={book}
         isOpen={isOpen}
         setIsOpen={setIsOpen}
+        onToggleSave={onToggleSave}
       />
     </>
   );

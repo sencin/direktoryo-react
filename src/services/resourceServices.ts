@@ -10,7 +10,8 @@ const mapResourceToBook = (item: any) => {
     description: item.description,
     url: item.official_url,
     tag: item.media_type,
-    image_url: item.image_url
+    image_url: item.image_url,
+    is_saved: item.is_saved ?? 0,
   };
 };
 

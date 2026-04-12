@@ -7,6 +7,7 @@ import CollectionsBar from '../../components/Home/CollectionsBar';
 import { CollectionService } from '../../services/collectionService';
 import { ResourceService } from '../../services/resourceServices';
 import HomeBookGrid from '../../components/Home/HomeBookGrid';
+import { api } from '../../utils/api';
 
 export default function Home() {
   const [activeCategory, setActiveCategory] = useState<number | 'all'>('all');
@@ -91,6 +92,23 @@ useEffect(() => {
 
   loadData();
 }, [activeCategory]);
+
+
+const toggleSave = async (id: number) => {
+  const res = await api.post(`/users/resources/${id}/save`, {});
+
+  setResourceBooks(prev =>
+    prev.map(r =>
+      r.id === id ? { ...r, is_saved: res.saved } : r
+    )
+  );
+
+  setSelectedBook(prev =>
+    prev?.id === id
+      ? { ...prev, is_saved: res.saved }
+      : prev
+  );
+};
 
   return (
     <div className="flex flex-col min-h-screen bg-light-bg dark:bg-nature-bg text-light-text dark:text-nature-cream transition-colors duration-300">
@@ -181,6 +199,7 @@ useEffect(() => {
           book={selectedBook} 
           isOpen={isSidebarOpen} 
           setIsOpen={setIsSidebarOpen} 
+          onToggleSave={toggleSave}
         />
       </div>
     </div>

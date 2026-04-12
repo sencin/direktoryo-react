@@ -1,7 +1,10 @@
 import { Download, Bookmark, List, ArrowLeft, Share2 } from 'lucide-react';
 import { useEffect } from 'react';
+export default function BookDetailMobile({ book, isOpen, setIsOpen, onToggleSave }: any) {
 
-export default function BookDetailMobile({ book, isOpen, setIsOpen }: any) {
+
+   const isSaved = book?.is_saved;
+   
 
     useEffect(() => {
     if (isOpen) {
@@ -15,6 +18,7 @@ export default function BookDetailMobile({ book, isOpen, setIsOpen }: any) {
     };
   }, [isOpen]);
   
+
   return (
     <aside
       className={`
@@ -84,10 +88,20 @@ export default function BookDetailMobile({ book, isOpen, setIsOpen }: any) {
                   <Download size={18} />
                   <span className="text-[9px] font-bold uppercase tracking-tighter">Download</span>
                 </button>
-                <button className="py-4 flex flex-col items-center gap-1">
-                  <Bookmark size={18} />
-                  <span className="text-[9px] font-bold uppercase tracking-tighter">Save</span>
+                 {/* SAVE BUTTON (UPDATED) */}
+                <button
+                  onClick={() => onToggleSave(book?.id)}
+                  className="py-4 flex flex-col items-center gap-1"
+                >
+                  <Bookmark
+                    size={18}
+                    className={isSaved ? "fill-nature-sage text-nature-sage" : ""}
+                  />
+                  <span className="text-[9px] font-bold uppercase tracking-tighter">
+                    {book?.is_saved ? "Saved" : "Save"}
+                  </span>
                 </button>
+                
                 <button className="py-4 flex flex-col items-center gap-1">
                   <List size={18} />
                   <span className="text-[9px] font-bold uppercase tracking-tighter">Add to List</span>
