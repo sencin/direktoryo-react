@@ -1,33 +1,53 @@
 import Navbar from './components/Navbar/Navbar'
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import Home from './pages/Home/Home';
 import Search from './pages/Search/Search';
 import Saved from './pages/Saved/Saved';
 import Account from './pages/Account/Account';
+import Login from './pages/Login/Login';
+import Landing from './pages/Landing/Landing';
+import Signup from './pages/Signup/Signup';
 
-function App() {
+function AppLayout() {
+  const location = useLocation();
+  const isAuthPage = ["/login", "/landing", "/signup"].includes(location.pathname);
+
   return (
-    <BrowserRouter>
-        {/* The background and text now adapt using v4 utilities */}
-        <div className="flex flex-col md:flex-row min-h-screen transition-colors duration-500 
+    <div className="flex flex-col md:flex-row min-h-screen transition-colors duration-500 
                     /* LIGHT MODE COLORS */
                     bg-light-bg text-light-text 
                     /* DARK MODE COLORS */
                     dark:bg-nature-bg dark:text-nature-cream">
-          <Navbar />
-          <main className="flex-1 pb-20 md:pb-0 md:pl-24">
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/search" element={<Search/>} />
-              <Route path="/saved" element={<Saved/>} />
-              <Route path="/account" element={<Account/>} />
-            {/* Add more routes here */}
-          </Routes>
-          </main>
-        </div>
- 
+      
+     {!isAuthPage && <Navbar />}
+
+     <main
+        className={`flex-1 transition-all ${
+          isAuthPage
+            ? "" 
+            : "pb-20 md:pb-0 md:pl-24"
+        }`}
+      >
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/search" element={<Search />} />
+          <Route path="/saved" element={<Saved />} />
+          <Route path="/account" element={<Account />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/landing" element={<Landing />} />
+          <Route path="/signup" element={<Signup />} />
+        </Routes>
+      </main>
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <BrowserRouter>
+      <AppLayout />
     </BrowserRouter>
   );
 }
 
-export default App
+export default App;
