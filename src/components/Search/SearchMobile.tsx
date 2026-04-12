@@ -1,5 +1,5 @@
 import { 
-  Search as SearchIcon, Flag, BarChart2, Banknote, Rocket, Landmark,  Atom, 
+  Search as SearchIcon, 
   Globe, ArrowRight, Loader2, X 
 } from 'lucide-react';
 import SearchCategoryList from './SearchCategoryList';
