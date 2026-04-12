@@ -9,7 +9,7 @@ export default function SearchMobile({ query, setQuery, results, isLoading, hasS
     <div className="flex flex-col min-h-screen">
       {/* HEADER AREA */}
       <div className="bg-nature-nav p-6 pt-12 pb-8 border-b border-nature-cream/10 sticky top-0 z-20">
-        <h1 className="text-4xl font-black mb-6 font-mono tracking-tighter text-nature-cream uppercase italic">
+        <h1 className="text-xl mb-6 font-mono tracking-tighter text-nature-cream">
           Search
         </h1>
         
