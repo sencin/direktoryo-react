@@ -8,6 +8,7 @@ import Login from './pages/Login/Login';
 import Landing from './pages/Landing/Landing';
 import Signup from './pages/Signup/Signup';
 import { useAuthInit } from './utils/useAuthInit';
+import AuthGuard from './utils/AuthGuard';
 
 function AppLayout() {
   const location = useLocation();
@@ -23,7 +24,7 @@ function AppLayout() {
       </div>
     );
   }
-  
+
   return (
     <div className="flex flex-col md:flex-row min-h-screen transition-colors duration-500 
                     /* LIGHT MODE COLORS */
@@ -45,9 +46,24 @@ function AppLayout() {
           <Route path="/search" element={<Search />} />
           <Route path="/saved" element={<Saved />} />
           <Route path="/account" element={<Account />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/landing" element={<Landing />} />
-          <Route path="/signup" element={<Signup />} />
+          
+         <Route path="/login" element={
+            <AuthGuard>
+              <Login />
+            </AuthGuard>
+          } />
+
+          <Route path="/signup" element={
+            <AuthGuard>
+              <Signup />
+            </AuthGuard>
+          } />
+
+          <Route path="/landing" element={
+            <AuthGuard>
+              <Landing />
+            </AuthGuard>
+          } />
         </Routes>
       </main>
     </div>
