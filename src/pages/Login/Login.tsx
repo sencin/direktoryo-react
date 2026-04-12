@@ -1,13 +1,41 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { api } from '../../utils/api';
+import { auth } from '../../utils/auth';
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
+  // ==============================
+  // LOGIN FUNCTION
+  // ==============================
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const formData = new FormData(e.currentTarget);
+
+    const email = formData.get("email");
+    const password = formData.get("password");
+
+    const res = await api.post("/auth/login", {
+      email,
+      password,
+    });
+
+    if (!res || !res.token) {
+      alert(res?.message || "Login failed");
+      return;
+    }
+
+    auth.set(res.token, res.user);
+
+    navigate("/");
+  };
+
   return (
     <div className="relative min-h-screen bg-nature-bg text-nature-cream font-mono flex items-center justify-center p-4">
-      
+
       {/* Back Button */}
       <button
         onClick={() => navigate(-1)}
@@ -17,7 +45,7 @@ export default function Login() {
       </button>
 
       <div className="w-full max-w-sm space-y-12">
-        
+
         {/* Header */}
         <div className="text-center space-y-4">
           <h1 className="text-3xl font-black uppercase tracking-tight">
@@ -30,7 +58,7 @@ export default function Login() {
 
         {/* Social Buttons */}
         <div className="space-y-4">
-          
+
           <button className="w-full flex items-center justify-center gap-4 py-4 px-6 border-2 border-nature-sage/30 rounded-xl hover:bg-nature-nav transition-colors">
             <img src="https://authjs.dev/img/providers/google.svg" className="h-5 w-5" />
             <span className="text-xs font-black uppercase tracking-widest text-nature-cream/70">
@@ -64,22 +92,25 @@ export default function Login() {
         </div>
 
         {/* Form */}
-        <form className="space-y-6">
-          
-          <input 
-            type="email" 
+        <form onSubmit={handleLogin} className="space-y-6">
+
+          <input
+            name="email"
+            type="email"
             placeholder="Email address"
             className="w-full py-4 px-6 bg-nature-nav border-2 border-nature-sage/30 rounded-xl text-xs font-bold placeholder:text-nature-cream/40 focus:border-nature-sage focus:ring-0 transition-colors"
           />
 
           <div className="relative">
-            <input 
+
+            <input
+              name="password"
               type={showPassword ? 'text' : 'password'}
               placeholder="Password"
               className="w-full py-4 px-6 bg-nature-nav border-2 border-nature-sage/30 rounded-xl text-xs font-bold placeholder:text-nature-cream/40 focus:border-nature-sage focus:ring-0 transition-colors"
             />
 
-            <button 
+            <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
               className="absolute right-6 top-1/2 -translate-y-1/2 text-nature-cream/40 hover:text-nature-cream transition-colors"
@@ -89,25 +120,28 @@ export default function Login() {
           </div>
 
           <div className="flex justify-between items-center">
-            <a
-                href="/signup"
-                className="text-[10px] font-black uppercase tracking-widest text-nature-cream/50 underline hover:text-nature-cream transition-colors"
-            >
-                Create Account
-            </a>
-                <a
-                href="/recovery"
-                className="text-[10px] font-black uppercase tracking-widest text-nature-cream/50 underline hover:text-nature-cream transition-colors"
-            >
-                Recovery Password
-            </a>
-         </div>
 
-          <button 
+            <a
+              href="/signup"
+              className="text-[10px] font-black uppercase tracking-widest text-nature-cream/50 underline hover:text-nature-cream transition-colors"
+            >
+              Create Account
+            </a>
+
+            <a
+              href="/recovery"
+              className="text-[10px] font-black uppercase tracking-widest text-nature-cream/50 underline hover:text-nature-cream transition-colors"
+            >
+              Recovery Password
+            </a>
+
+          </div>
+
+          <button
             type="submit"
             className="w-full py-5 bg-nature-sage hover:bg-nature-sage/80 rounded-xl shadow-lg shadow-black/20 text-xs font-black uppercase tracking-[0.2em] text-nature-bg transition-all"
           >
-            Continue
+            Login
           </button>
 
         </form>

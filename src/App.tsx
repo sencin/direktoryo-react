@@ -7,11 +7,23 @@ import Account from './pages/Account/Account';
 import Login from './pages/Login/Login';
 import Landing from './pages/Landing/Landing';
 import Signup from './pages/Signup/Signup';
+import { useAuthInit } from './utils/useAuthInit';
 
 function AppLayout() {
   const location = useLocation();
   const isAuthPage = ["/login", "/landing", "/signup"].includes(location.pathname);
-
+  const { loading } = useAuthInit();
+  
+   if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-nature-bg text-nature-cream">
+        <p className="text-xs uppercase tracking-widest opacity-60">
+          loading session...
+        </p>
+      </div>
+    );
+  }
+  
   return (
     <div className="flex flex-col md:flex-row min-h-screen transition-colors duration-500 
                     /* LIGHT MODE COLORS */
