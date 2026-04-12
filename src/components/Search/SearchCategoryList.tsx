@@ -69,7 +69,7 @@ export default function SearchCategoryList({ onSelect }: { onSelect: (name: stri
         <button
           key={category.id}
           onClick={() => onSelect(category.name)}
-          className="w-full flex items-center justify-between py-6 hover:bg-nature-nav transition-colors group text-left px-4"
+          className="w-full flex items-center justify-between py-4 hover:bg-nature-nav transition-colors group text-left px-4"
         >
           <div className="flex items-center gap-4">
             <span className="text-nature-sage group-hover:scale-110 transition-transform">

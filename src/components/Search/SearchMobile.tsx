@@ -8,8 +8,8 @@ export default function SearchMobile({ query, setQuery, results, isLoading, hasS
   return (
     <div className="flex flex-col min-h-screen">
       {/* HEADER AREA */}
-      <div className="bg-nature-nav p-6 pt-12 pb-8 border-b border-nature-cream/10 sticky top-0 z-20">
-        <h1 className="text-xl mb-6 font-mono tracking-tighter text-nature-cream">
+      <div className="bg-nature-nav p-4 pt-6 pb-6 border-b border-nature-cream/10 sticky top-0 z-20">
+        <h1 className="text-xl mb-4 font-mono tracking-tighter text-nature-cream">
           Search
         </h1>
         
