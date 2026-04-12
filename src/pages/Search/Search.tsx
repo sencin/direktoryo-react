@@ -1,19 +1,21 @@
 import { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom'; // Add this import
 import { ResourceService } from "../../services/resourceServices";
 import SearchMobile from '../../components/Search/SearchMobile';
 import SearchDesktop from '../../components/Search/SearchDesktop';
+import { useSearchParams } from 'react-router-dom';
 
 export default function Search() {
-  const [searchParams] = useSearchParams();
-  const initialQuery = searchParams.get('q') || ''; // Get 'q' from URL
-
-  const [query, setQuery] = useState(initialQuery);
+ 
   const [results, setResults] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
+  const [searchParams] = useSearchParams();
 
-  // Sync state if URL changes while on the page
+  const initialQuery = searchParams.get('q') || '';
+  // Centralized Logic: Fetching and Debouncing
+
+
+  const [query, setQuery] = useState(initialQuery);
   useEffect(() => {
     const q = searchParams.get('q');
     if (q) setQuery(q);
@@ -43,6 +45,7 @@ export default function Search() {
     return () => clearTimeout(debounce);
   }, [query]);
 
+  // Props bundle to keep the return clean
   const searchProps = {
     query,
     setQuery,
@@ -53,10 +56,12 @@ export default function Search() {
 
   return (
     <main className="min-h-screen bg-nature-bg selection:bg-nature-sage selection:text-nature-cream">
+      {/* Mobile Layout (Hidden on Desktop) */}
       <div className="xl:hidden">
         <SearchMobile {...searchProps} />
       </div>
 
+      {/* Desktop Layout (Hidden on Mobile) */}
       <div className="hidden xl:block">
         <SearchDesktop {...searchProps} />
       </div>
