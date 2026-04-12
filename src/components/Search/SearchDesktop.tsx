@@ -1,6 +1,6 @@
 import { 
   Search as SearchIcon, Globe, Loader2, SearchX, 
-  Download, ListPlus, Bookmark, BookOpen 
+  Download, ListPlus, Bookmark 
 } from 'lucide-react';
 
 export default function SearchDesktop({ query, setQuery, results, isLoading, hasSearched }: any) {
