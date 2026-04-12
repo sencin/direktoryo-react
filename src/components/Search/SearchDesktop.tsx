@@ -80,10 +80,14 @@ export default function SearchDesktop({ query, setQuery, results, isLoading, has
                   </div>
 
                   {/* Action Bar */}
-                  <button className="w-full py-4 bg-nature-sage text-nature-bg font-black uppercase tracking-widest text-sm rounded-md hover:opacity-90 transition-all flex items-center justify-center gap-2 mb-4">
-                    <BookOpen size={18} />
-                    Read Preview
-                  </button>
+                     <a
+                      href={item?.url || '#'}
+                      target="_blank"
+                      className="block w-full py-5 bg-nature-sage text-center text-nature-cream text-[10px] font-black uppercase tracking-widest"
+                    >
+                      Visit Official Website
+                    </a>
+
 
                   <div className="flex items-center justify-around border-t border-nature-cream/10 pt-4">
                     <button className="flex items-center gap-2 text-[10px] font-black uppercase text-nature-cream/40 hover:text-nature-cream transition-colors">

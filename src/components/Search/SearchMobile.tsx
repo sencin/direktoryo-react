@@ -4,8 +4,7 @@ import {
 } from 'lucide-react';
 import SearchCategoryList from './SearchCategoryList';
 
-export default function SearchMobile({ query, setQuery, results, isLoading, hasSearched }: any) {
-
+export default function SearchMobile({ query, setQuery, results, isLoading, hasSearched, onBookClick }: any) {
   return (
     <div className="flex flex-col min-h-screen">
       {/* HEADER AREA */}
@@ -42,7 +41,7 @@ export default function SearchMobile({ query, setQuery, results, isLoading, hasS
           /* SEARCH RESULTS LIST */
           <div className="divide-y divide-nature-cream/5 animate-in fade-in duration-300">
             {results.map((item: any) => (
-              <div key={item.id} className="flex items-center gap-4 py-5 group cursor-pointer">
+              <div key={item.id} onClick={() => onBookClick(item)}  className="flex items-center gap-4 py-5 group cursor-pointer">
                 <div className="w-14 h-14 flex-shrink-0 bg-nature-nav border border-nature-cream/10 rounded-lg overflow-hidden">
                   {item.image_url ? (
                     <img src={item.image_url} className="w-full h-full object-cover" alt="" />

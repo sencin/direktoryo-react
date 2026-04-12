@@ -3,6 +3,7 @@ import { useSearchParams } from 'react-router-dom'; // Add this import
 import { ResourceService } from "../../services/resourceServices";
 import SearchMobile from '../../components/Search/SearchMobile';
 import SearchDesktop from '../../components/Search/SearchDesktop';
+import BookDetailPanel from '../../components/Home/BookDetailPanel';
 
 export default function Search() {
   const [searchParams] = useSearchParams();
@@ -12,6 +13,15 @@ export default function Search() {
   const [results, setResults] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
+
+
+  const [selectedBook, setSelectedBook] = useState<any>(null);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  const handleBookClick = (item: any) => {
+  setSelectedBook(item);
+  setIsSidebarOpen(true);
+};
 
   // Sync state if URL changes while on the page
   useEffect(() => {
@@ -49,6 +59,7 @@ export default function Search() {
     results,
     isLoading,
     hasSearched,
+    onBookClick: handleBookClick
   };
 
   return (
@@ -60,6 +71,16 @@ export default function Search() {
       <div className="hidden xl:block">
         <SearchDesktop {...searchProps} />
       </div>
+
+        <div className="xl:hidden">
+  <BookDetailPanel
+    book={selectedBook}
+    isOpen={isSidebarOpen}
+    setIsOpen={setIsSidebarOpen}
+  />
+</div>
+
+
     </main>
   );
 }
