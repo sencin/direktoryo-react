@@ -57,7 +57,7 @@ export default function SearchBar() {
 
   return (
     <div ref={containerRef} className="flex-1 relative h-full">
-      <div className="px-4 py-2 h-full flex items-center">
+      <div className=" h-full flex items-center">
         <div className="flex items-center w-full px-4 py-2 bg-nature-bg text-nature-cream border border-nature-sage/60 hover:border-nature-sage rounded-lg shadow-sm transition-colors">
             
             <Search size={18} className="mr-4 opacity-60" />
