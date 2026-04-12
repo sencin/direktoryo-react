@@ -7,12 +7,13 @@ export default function Landing() {
       
       <div className="w-full max-w-[340px] flex flex-col items-center">
         
-        {/* Logo */}
+                {/* Logo */}
         <div className="mt-12 mb-10">
-          <svg width="80" height="80" viewBox="0 0 100 100">
-            <path d="M50 95C70 95 85 80 85 60C85 45 75 30 50 5C25 30 15 45 15 60C15 80 30 95 50 95Z" fill="#697565" />
-            <path d="M50 85C62 85 72 75 72 63C72 54 65 45 50 30C35 45 28 54 28 63C28 75 38 85 50 85Z" fill="#ECDFCC" opacity="0.15" />
-          </svg>
+        <img
+            src="/icons/direktoryoV2.svg"
+            alt="Litverse Logo"
+            className="w-20 h-20 object-contain"
+        />
         </div>
 
         {/* Content */}
