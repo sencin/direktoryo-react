@@ -12,6 +12,7 @@ const mapResourceToBook = (item: any) => {
     tag: item.media_type,
     image_url: item.image_url,
     is_saved: item.is_saved ?? 0,
+    user_id: item.user_id ?? 0
   };
 };
 

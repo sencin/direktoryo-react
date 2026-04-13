@@ -1,10 +1,14 @@
-import { Download, Bookmark, List, ArrowLeft, Share2 } from 'lucide-react';
+import { Download, Bookmark, List, ArrowLeft, Share2, Pencil } from 'lucide-react';
 import { useEffect } from 'react';
+import { auth } from '../../utils/auth';
+import { useNavigate } from 'react-router-dom';
 export default function BookDetailMobile({ book, isOpen, setIsOpen, onToggleSave }: any) {
 
 
    const isSaved = book?.is_saved;
-   
+   const currentUser = auth.getUser();
+   const isOwner = currentUser?.id === book?.user_id;
+  const navigate = useNavigate(); 
 
     useEffect(() => {
     if (isOpen) {
@@ -19,6 +23,38 @@ export default function BookDetailMobile({ book, isOpen, setIsOpen, onToggleSave
   }, [isOpen]);
   
 
+
+   const actions = [
+      {
+        icon: <Download size={18} />,
+        label: "Get",
+        onClick: () => {}
+      },
+      {
+        icon: (
+          <Bookmark
+            size={18}
+            className={isSaved ? "fill-nature-sage text-nature-sage" : ""}
+          />
+        ),
+        label: isSaved ? "Saved" : "Save",
+        onClick: () => onToggleSave(book?.id)
+      },
+      {
+        icon: <List size={18} />,
+        label: "Add to list",
+        onClick: () => {}
+      }
+    ];
+
+    if (isOwner) {
+      actions.push({
+        icon: <Pencil size={18} />,
+        label: "Edit",
+        onClick: () => navigate(`/edit/resource/${book.id}`)
+      });
+    }
+    
   return (
     <aside
       className={`
@@ -83,30 +119,25 @@ export default function BookDetailMobile({ book, isOpen, setIsOpen, onToggleSave
               </a>
 
               {/* ACTIONS (Your original UI) */}
-              <div className="grid grid-cols-3 border  rounded-xl border-black/10  dark:border-white/10 divide-x divide-black/10 dark:divide-white/10 ">
-                <button className="py-4 flex flex-col items-center gap-1">
-                  <Download size={18} />
-                  <span className="text-[9px] font-bold uppercase tracking-tighter">Download</span>
-                </button>
-                 {/* SAVE BUTTON (UPDATED) */}
-                <button
-                  onClick={() => onToggleSave(book?.id)}
-                  className="py-4 flex flex-col items-center gap-1"
+                <div
+                  className="grid border border-black/10 rounded-xl dark:border-white/10 divide-x divide-black/10 dark:divide-white/10"
+                  style={{
+                    gridTemplateColumns: `repeat(${actions.length}, minmax(0, 1fr))`
+                  }}
                 >
-                  <Bookmark
-                    size={18}
-                    className={isSaved ? "fill-nature-sage text-nature-sage" : ""}
-                  />
-                  <span className="text-[9px] font-bold uppercase tracking-tighter">
-                    {book?.is_saved ? "Saved" : "Save"}
-                  </span>
-                </button>
-                
-                <button className="py-4 flex flex-col items-center gap-1">
-                  <List size={18} />
-                  <span className="text-[9px] font-bold uppercase tracking-tighter">Add to List</span>
-                </button>
-              </div>
+                    {actions.map((action, index) => (
+                      <button
+                        key={index}
+                        onClick={action.onClick}
+                        className="flex flex-col items-center gap-2 py-4 hover:bg-black/5 transition-colors"
+                      >
+                        {action.icon}
+                        <span className="text-[9px] font-bold uppercase tracking-tighter">
+                          {action.label}
+                        </span>
+                      </button>
+                    ))}
+                </div>
 
               {/* DESCRIPTION (Your original UI) */}
               <p className="text-xs opacity-70 italic leading-relaxed">

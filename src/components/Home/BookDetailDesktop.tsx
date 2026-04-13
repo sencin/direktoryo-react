@@ -1,7 +1,14 @@
-import { X, Download, Bookmark, List } from 'lucide-react';
+import { X, Download, Bookmark, List, Pencil } from 'lucide-react';
 import { useEffect } from 'react';
+import { auth } from '../../utils/auth';
+import { useNavigate } from 'react-router-dom';
 
 export default function BookDetailDesktop({ book, isOpen, setIsOpen, onToggleSave }: any) {
+    const currentUser = auth.getUser();
+    const isOwner = currentUser?.id === book?.user_id;
+    const navigate = useNavigate(); 
+    const isSaved = book?.is_saved;
+
       useEffect(() => {
         if (isOpen) {
           document.body.style.overflow = 'hidden';
@@ -14,8 +21,39 @@ export default function BookDetailDesktop({ book, isOpen, setIsOpen, onToggleSav
         };
       }, [isOpen]);
       
-    const isSaved = book?.is_saved;
-    
+
+      const actions = [
+      {
+        icon: <Download size={18} />,
+        label: "Get",
+        onClick: () => {}
+      },
+      {
+        icon: (
+          <Bookmark
+            size={18}
+            className={isSaved ? "fill-nature-sage text-nature-sage" : ""}
+          />
+        ),
+        label: isSaved ? "Saved" : "Save",
+        onClick: () => onToggleSave(book?.id)
+      },
+      {
+        icon: <List size={18} />,
+        label: "Add to list",
+        onClick: () => {}
+      }
+    ];
+
+    if (isOwner) {
+      actions.push({
+        icon: <Pencil size={18} />,
+        label: "Edit",
+        onClick: () => navigate(`/edit/resource/${book.id}`)
+      });
+    }
+
+
   return (
     <aside className={`
       fixed z-[70] bg-light-bg dark:bg-nature-bg shadow-2xl top-0 right-0 bottom-0 border-l border-black/10
@@ -49,21 +87,24 @@ export default function BookDetailDesktop({ book, isOpen, setIsOpen, onToggleSav
                 Visit Official Website
               </a>
               
-        <div className="grid grid-cols-3 border border-black/10 rounded-xl dark:border-white/10 divide-x divide-black/10 dark:divide-white/10 ">
-           <button className="flex flex-col items-center gap-2 py-4 hover:bg-black/5 transition-colors"><Download size={18} /><span className="text-[9px] font-bold uppercase">Get</span></button>
-           <button className="flex flex-col items-center gap-2 py-4 hover:bg-black/5 transition-colors"  
-             onClick={() => onToggleSave(book?.id)}>
-              <Bookmark
-                size={18}
-                className={isSaved ? "fill-nature-sage text-nature-sage" : ""}
-              />
-
-               
-               <span className="text-[9px] font-bold uppercase tracking-tighter">
-                {book?.is_saved ? "Saved" : "Save"}
-              </span>
-           </button>
-           <button className="flex flex-col items-center gap-2 py-4 hover:bg-black/5 transition-colors"><List size={18} /><span className="text-[9px] font-bold uppercase">Add to list</span></button>
+        <div
+          className="grid border border-black/10 rounded-xl dark:border-white/10 divide-x divide-black/10 dark:divide-white/10"
+          style={{
+            gridTemplateColumns: `repeat(${actions.length}, minmax(0, 1fr))`
+          }}
+        >
+            {actions.map((action, index) => (
+              <button
+                key={index}
+                onClick={action.onClick}
+                className="flex flex-col items-center gap-2 py-4 hover:bg-black/5 transition-colors"
+              >
+                {action.icon}
+                <span className="text-[9px] font-bold uppercase tracking-tighter">
+                  {action.label}
+                </span>
+              </button>
+            ))}
         </div>
 
         <p className="text-xs leading-relaxed opacity-70 font-medium italic border-l-2 border-nature-sage pl-4">
