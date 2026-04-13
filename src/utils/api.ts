@@ -6,9 +6,14 @@ export const api = {
       // 1. Get the token from storage (update key name if yours is different)
       const token = localStorage.getItem('auth_token');
 
-      const headers: Record<string, string> = {
-        'Content-Type': 'application/json',
-      };
+      const isFormData = body instanceof FormData;
+
+      const headers: Record<string, string> = {};
+
+      if (!isFormData) {
+        headers['Content-Type'] = 'application/json';
+      }
+
 
       // 2. If token exists, add the Bearer header
       if (token) {
@@ -18,11 +23,9 @@ export const api = {
       const options: RequestInit = {
         method,
         headers,
+        body: isFormData ? body : (body ? JSON.stringify(body) : undefined),
       };
 
-      if (body) {
-        options.body = JSON.stringify(body);
-      }
 
       const response = await fetch(`${BASE}/api${endpoint}`, options);
 
