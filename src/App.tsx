@@ -7,8 +7,12 @@ import Account from './pages/Account/Account';
 import Login from './pages/Login/Login';
 import Landing from './pages/Landing/Landing';
 import Signup from './pages/Signup/Signup';
+import Create from './pages/Create/Create';
 import { useAuthInit } from './utils/useAuthInit';
 import AuthGuard from './utils/AuthGuard';
+import CreateResource from './pages/Create/CreateResource';
+import CreateCollection from './pages/Create/CreateCollection';
+import CreateCategory from './pages/Create/CreateCategory';
 
 function AppLayout() {
   const location = useLocation();
@@ -48,6 +52,12 @@ function AppLayout() {
           <Route path="/search" element={<Search />} />
           <Route path="/saved" element={<Saved />} />
           <Route path="/account" element={<Account />} />
+          <Route path="/create" element={<Create />} />
+          {/* Sub-pages */}
+          <Route path="/create/resource" element={<CreateResource />} />
+          <Route path="/create/collection" element={<CreateCollection />} />
+          <Route path="/create/category" element={<CreateCategory />} />
+
           
          <Route path="/login" element={
             <AuthGuard>

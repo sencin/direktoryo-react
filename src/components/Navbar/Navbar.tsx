@@ -1,9 +1,10 @@
 import { NavLink } from 'react-router-dom';
-import { Home, Search, Bookmark, User, Settings, LogOut } from 'lucide-react';
+import { Home, Search, Bookmark, User, Settings, LogOut, Plus } from 'lucide-react';
 
 const MAIN_LINKS: NavLinkItem[] = [
   { label: 'Home', path: '/home', icon: Home },     // Just the name
   { label: 'Search', path: '/search', icon: Search },
+  { label: 'Create', path: '/create', icon: Plus },
   { label: 'Saved', path: '/saved', icon: Bookmark },
   { label: 'Account', path: '/account', icon: User },
 ];
@@ -44,17 +45,6 @@ md:top-0 md:left-0 md:h-screen md:w-24 md:border-t-0 md:border-r">
             </li>
           ))}
         </ul>
-
-        {/* 3. UTILITY LINKS */}
-        <div className="hidden md:flex flex-col items-center gap-10 mt-auto pb-10 w-full">
-          <NavIcon link={{ label: 'Settings', path: '/settings', icon: Settings  /* Pass the component name only */}} 
-        />
-          
-          <button className="flex flex-col items-center gap-1 text-app-muted hover:text-app-light transition-colors cursor-pointer group">
-            <LogOut size={24} className="group-hover:translate-x-1 transition-transform" />
-            <span className="text-[10px] font-medium tracking-tighter">Logout</span>
-          </button>
-        </div>
       </div>
     </nav>
   );
