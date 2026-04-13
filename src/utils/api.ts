@@ -25,20 +25,20 @@ export const api = {
       }
 
       const response = await fetch(`${BASE}/api${endpoint}`, options);
-      
-      // 3. Handle 401 Unauthorized (Optional: logout user or refresh token)
-      if (response.status === 401) {
-        console.warn("Unauthorized! Token might be expired.");
-      }
 
       if (!response.ok) {
-        throw new Error(`HTTP ${method} Error: ${response.status}`);
+        const errorData = await response.json().catch(() => ({}));
+        throw { 
+          status: response.status, 
+          message: errorData.error || `HTTP ${method} Error`,
+        };
       }
 
       return await response.json();
     } catch (error) {
-      console.error(`API ${method} Failure:`, error);
-      return { success: false, error };
+       console.error(`API ${method} Failure:`, error);
+      // RE-THROW so the calling function knows it failed
+      throw error;
     }
   },
 
