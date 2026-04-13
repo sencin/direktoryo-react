@@ -13,6 +13,7 @@ import AuthGuard from './utils/AuthGuard';
 import CreateResource from './pages/Create/CreateResource';
 import CreateCollection from './pages/Create/CreateCollection';
 import CreateCategory from './pages/Create/CreateCategory';
+import EditResource from './pages/Create/Edit/EditResource';
 
 function AppLayout() {
   const location = useLocation();
@@ -57,6 +58,7 @@ function AppLayout() {
           <Route path="/create/resource" element={<CreateResource />} />
           <Route path="/create/collection" element={<CreateCollection />} />
           <Route path="/create/category" element={<CreateCategory />} />
+          <Route path="/edit/resource/:id" element={<EditResource />} />
 
           
          <Route path="/login" element={
