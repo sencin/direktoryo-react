@@ -25,7 +25,7 @@ export default function CreateCategory() {
       
       // add toast here after you finished creating all three
 
-    } catch (error) {
+    } catch (error: any) {
       console.error("Creation failed:", error.message);
       console.log("Failed with status:", error.status);
     } finally {
