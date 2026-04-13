@@ -17,7 +17,7 @@ import EditResource from './pages/Create/Edit/EditResource';
 
 function AppLayout() {
   const location = useLocation();
-  const isAuthPage = ["/login", "/landing", "/signup"].includes(location.pathname);
+  const isAuthPage = ["/login", "/", "/signup"].includes(location.pathname);
   const { loading } = useAuthInit();
   
    if (loading) {
