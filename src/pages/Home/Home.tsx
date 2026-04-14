@@ -140,7 +140,7 @@ const toggleSave = async (id: number) => {
 
           {/* --- OPTION 2: COLLECTIONS ENGINE --- */}
           <section className={`${!isInsideCollection ? 'pt-8 border-t border-black/5' : ''}`}>
-            <div className="px-8 mb-4 flex justify-between items-center">
+            <div className="px-4 mb-4 flex justify-between items-center">
               <div>
                 <h2
                     className={
@@ -166,7 +166,7 @@ const toggleSave = async (id: number) => {
               {isInsideCollection && (
                 <button 
                   onClick={() => setActiveCollection('All')}
-                  className="px-4 py-2 bg-black/5 hover:bg-black/10 rounded-full text-[9px] font-black uppercase tracking-widest transition-colors"
+                  className="py-2 bg-black/5 hover:bg-black/10 rounded-full text-[9px] font-black uppercase tracking-widest transition-colors"
                 >
                   ← Back to Directory
                 </button>
