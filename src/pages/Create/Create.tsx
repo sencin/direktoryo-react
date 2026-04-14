@@ -24,7 +24,21 @@ const CREATE_OPTIONS = [
     description: "Create a broad classification for your library",
     icon: <FolderPlus size={20} />,
     path: "/create/category"
-  }
+  },
+  {
+  id: "add-to-collection",
+  name: "Add to Collection",
+  description: "Attach existing resources to a collection",
+  icon: <Layers size={20} />,
+  path: "/create/collection/add"
+},
+{
+  id: "view-collections",
+  name: "View Collections",
+  description: "Browse all your saved collections",
+  icon: <FolderPlus size={20} />,
+  path: "/collections"
+}
 ];
 
 export default function Create() {
