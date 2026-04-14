@@ -2,14 +2,17 @@ import { useEffect, useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { api } from "../../utils/api";
 import { ArrowLeft, Folder, SearchX } from "lucide-react";
+import { auth } from "../../utils/auth";
 
 export default function CollectionsIndex() {
   const navigate = useNavigate();
-
+  const currentUser = auth.getUser();
+  
   const [collections, setCollections] = useState<any[]>([]);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
 
+  
   useEffect(() => {
     const fetchCollections = async () => {
       try {
@@ -77,44 +80,50 @@ export default function CollectionsIndex() {
 
         {/* LIST */}
         <div className="max-h-[500px] overflow-y-auto space-y-4 pr-2">
-  {filteredCollections.length > 0 ? (
-    filteredCollections.map((col) => (
-      <button
-        key={col.id}
-        onClick={() => navigate(`/collections/${col.id}`)}
-        className="w-full p-5 border border-nature-sage/20 hover:border-nature-sage transition text-left"
-      >
-        {/* TOP ROW: title + edit */}
-        <div className="flex items-center justify-between mb-2">
-          <div className="flex items-center gap-2">
-            <Folder size={18} />
-            <h2 className="font-black uppercase">{col.name}</h2>
-          </div>
+          {filteredCollections.length > 0 ? (
+            filteredCollections.map((col) => {
+              const isOwner = currentUser?.id === col.user_id; // ✅ HERE
 
-          {/* EDIT BUTTON */}
-          <button
-            onClick={(e) => {
-              e.stopPropagation(); // 👈 prevents opening collection page
-              navigate(`/collections/${col.id}/edit`);
-            }}
-            className="text-[10px] uppercase tracking-[0.2em] opacity-40 hover:opacity-100 transition"
-          >
-            Edit
-          </button>
+              return (
+                <button
+                  key={col.id}
+                  onClick={() => navigate(`/collections/${col.id}`)}
+                  className="w-full p-5 border border-nature-sage/20 hover:border-nature-sage transition text-left"
+                >
+                  {/* TOP ROW */}
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center gap-2">
+                      <Folder size={18} />
+                      <h2 className="font-black uppercase">{col.name}</h2>
+                    </div>
+
+                    {/* EDIT BUTTON (ONLY OWNER) */}
+                    {isOwner && (
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          navigate(`/collections/${col.id}/edit`);
+                        }}
+                        className="text-[10px] uppercase tracking-[0.2em] opacity-40 hover:opacity-100 transition"
+                      >
+                        Edit
+                      </button>
+                    )}
+                  </div>
+
+                  <p className="text-xs opacity-50">{col.description}</p>
+                </button>
+              );
+            })
+          ) : (
+            <div className="flex flex-col items-center justify-center py-32 text-center opacity-20">
+              <SearchX size={64} className="mb-4" />
+              <h2 className="text-xl font-black uppercase tracking-widest">
+                No Collections Found
+              </h2>
+            </div>
+          )}
         </div>
-
-        <p className="text-xs opacity-50">{col.description}</p>
-      </button>
-    ))
-  ) : (
-    <div className="flex flex-col items-center justify-center py-32 text-center opacity-20">
-      <SearchX size={64} className="mb-4" />
-      <h2 className="text-xl font-black uppercase tracking-widest">
-        No Collections Found
-      </h2>
-    </div>
-  )}
-</div>
 
       </div>
     </div>
