@@ -1,40 +1,42 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Layers, Loader2, Lock } from "lucide-react"; // Swapped Upload for Lock
+import { ArrowLeft, Layers, Loader2, Link as LinkIcon, Image as ImageIcon } from "lucide-react"; 
 import { api } from "../../utils/api";
 
-
-/// swap this tsx for the create collection final when backend supports uploading
 export default function CreateCollection() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  
+  const [imageError, setImageError] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     description: "",
+    image_url: "", // Added this
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!formData.name.trim()) return;
+  e.preventDefault();
+  if (!formData.name.trim()) return;
 
-    setLoading(true);
-    try {
-      // Reverted to simple object since we aren't sending files yet
-      const payload = {
-        name: formData.name.toUpperCase(),
-        description: formData.description,
-      };
+  setLoading(true);
+  try {
+    // Standard JSON payload
+    const payload = {
+      name: formData.name.toUpperCase(),
+      description: formData.description,
+      image_url: formData.image_url.trim(),
+    };
 
-      await api.post("/collections", payload);
-      navigate(-1);
-    } catch (err: any) {
-      console.error("Status:", err.status);
-      alert(err.message || "Failed to create collection");
-    } finally {
-      setLoading(false);
-    }
-  };
+    // Axios/api.post sends this as application/json by default
+    await api.post("/collections", payload);
+    
+    navigate(-1);
+  } catch (err: any) {
+    console.error("Error:", err);
+    alert(err.response?.data?.message || "Failed to create collection");
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <div className="min-h-screen bg-nature-bg text-nature-cream font-mono p-4 md:p-8 lg:p-12">
@@ -52,18 +54,45 @@ export default function CreateCollection() {
         </header>
 
         <form onSubmit={handleSubmit} className="space-y-6 md:space-y-10">
-          {/* Disabled Image Upload Area */}
-          <div className="space-y-3 opacity-30 grayscale cursor-not-allowed">
-            <div className="flex justify-between items-center">
-                <label className="text-[10px] font-black uppercase tracking-widest text-nature-sage">Cover Image</label>
-                <span className="text-[9px] bg-nature-sage/20 text-nature-sage px-2 py-0.5 font-bold uppercase tracking-tighter">Disabled</span>
+          
+          {/* IMAGE URL & PREVIEW */}
+          <div className="space-y-4">
+            <div className="space-y-3">
+              <label className="text-[10px] font-black uppercase tracking-widest text-nature-sage flex items-center gap-2">
+                <LinkIcon size={12} /> Cover Image URL
+              </label>
+              <input 
+                type="text" 
+                value={formData.image_url}
+                onChange={(e) => {
+                  setFormData({ ...formData, image_url: e.target.value });
+                  // 2. Reset the error state whenever the user types
+                  setImageError(false); 
+                }}
+                placeholder="https://images.unsplash.com/..." 
+                className="w-full bg-nature-nav/30 border-2 border-nature-sage/20 p-4 md:p-5 outline-none focus:border-nature-sage transition-colors text-sm" 
+              />
             </div>
-            
-            <div className="w-full aspect-video bg-nature-nav/30 border-2 border-dashed border-nature-sage/20 flex flex-col items-center justify-center overflow-hidden">
-                <div className="flex flex-col items-center gap-3 p-4 text-center">
-                  <Lock size={24} />
-                  <span className="text-[10px] font-bold uppercase tracking-widest">Upload Module Offline</span>
-                </div>
+
+            {/* LIVE PREVIEW BOX */}
+            <div className="w-full aspect-video bg-nature-nav/30 border-2 border-dashed border-nature-sage/10 flex items-center justify-center overflow-hidden relative">
+                {/* 3. Check for both URL presence AND no error */}
+                {formData.image_url && !imageError ? (
+                  <img 
+                    src={formData.image_url} 
+                    alt="Preview" 
+                    className="w-full h-full object-cover"
+                    // 4. Update state on error instead of mutating the DOM
+                    onError={() => setImageError(true)} 
+                  />
+                ) : (
+                  <div className="flex flex-col items-center gap-3 p-4 text-center opacity-20">
+                    <ImageIcon size={24} />
+                    <span className="text-[10px] font-bold uppercase tracking-widest">
+                      {imageError ? "Invalid Image URL" : "Image Preview"}
+                    </span>
+                  </div>
+                )}
             </div>
           </div>
 
