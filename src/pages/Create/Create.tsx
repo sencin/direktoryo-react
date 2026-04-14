@@ -1,5 +1,7 @@
-import { useNavigate } from "react-router-dom"; // 1. Import the hook
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { ChevronRight, FolderPlus, Link, Layers } from "lucide-react";
+import { api } from "../../utils/api";
 
 const CREATE_OPTIONS = [
   {
@@ -7,7 +9,7 @@ const CREATE_OPTIONS = [
     name: "Resource",
     description: "Add a new book, link, or tool to your archive",
     icon: <Link size={20} />,
-    path: "/create/resource" // The path to navigate to
+    path: "/create/resource"
   },
   {
     id: "collection",
@@ -26,7 +28,50 @@ const CREATE_OPTIONS = [
 ];
 
 export default function Create() {
-  const navigate = useNavigate(); // 2. Initialize the navigate function
+  const navigate = useNavigate();
+
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const checkAuth = async () => {
+      try {
+        const res = await api.get("/users/me");
+
+        if (!isMounted) return;
+
+        const userData = res?.user ?? res?.data?.user;
+
+        if (userData?.id) {
+          setIsAuthenticated(true);
+        } else {
+          setIsAuthenticated(false);
+        }
+      } catch (err) {
+        if (isMounted) setIsAuthenticated(false); // 401 lands here
+      } finally {
+        if (isMounted) setIsLoading(false);
+      }
+    };
+
+    checkAuth();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  if (isLoading || isAuthenticated === null) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-nature-bg text-nature-cream font-mono">
+        <p className="text-[10px] uppercase tracking-[0.4em] opacity-40 animate-pulse">
+          loading session...
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-nature-bg text-nature-cream font-mono">
@@ -40,33 +85,58 @@ export default function Create() {
       </header>
 
       <main className="divide-y divide-nature-sage/10">
-        {CREATE_OPTIONS.map((option) => (
-          <button
-            key={option.id}
-            onClick={() => navigate(option.path)} // 3. Use navigate on click
-            className="w-full flex items-center justify-between p-6 hover:bg-nature-nav/40 transition-all group text-left"
-          >
-            <div className="flex items-center gap-6">
-              <div className="p-4 border-2 border-nature-sage/20 text-nature-sage group-hover:border-nature-sage group-hover:bg-nature-sage group-hover:text-nature-bg transition-all">
-                {option.icon}
+        {CREATE_OPTIONS.map((option) => {
+          const disabled = !isAuthenticated;
+
+          return (
+            <button
+              key={option.id}
+              onClick={() => {
+                if (!disabled) navigate(option.path);
+              }}
+              disabled={disabled}
+              className={`w-full flex items-center justify-between p-6 text-left transition-all group
+                ${disabled 
+                  ? "opacity-30 cursor-not-allowed" 
+                  : "hover:bg-nature-nav/40"}
+              `}
+            >
+              <div className="flex items-center gap-6">
+                <div
+                  className={`p-4 border-2 transition-all
+                    ${
+                      disabled
+                        ? "border-nature-sage/10 text-nature-sage/30"
+                        : "border-nature-sage/20 text-nature-sage group-hover:border-nature-sage group-hover:bg-nature-sage group-hover:text-nature-bg"
+                    }
+                  `}
+                >
+                  {option.icon}
+                </div>
+
+                <div className="space-y-1">
+                  <span className="text-lg font-black tracking-tight uppercase block">
+                    {option.name}
+                  </span>
+                  <span className="text-[10px] font-bold opacity-40 uppercase tracking-widest block">
+                    {option.description}
+                  </span>
+                </div>
               </div>
 
-              <div className="space-y-1">
-                <span className="text-lg font-black tracking-tight uppercase block">
-                  {option.name}
-                </span>
-                <span className="text-[10px] font-bold opacity-40 uppercase tracking-widest block">
-                  {option.description}
-                </span>
-              </div>
-            </div>
-
-            <ChevronRight 
-              size={22} 
-              className="text-nature-sage/20 group-hover:text-nature-sage group-hover:translate-x-1 transition-all" 
-            />
-          </button>
-        ))}
+              <ChevronRight
+                size={22}
+                className={`transition-all
+                  ${
+                    disabled
+                      ? "text-nature-sage/10"
+                      : "text-nature-sage/20 group-hover:text-nature-sage group-hover:translate-x-1"
+                  }
+                `}
+              />
+            </button>
+          );
+        })}
       </main>
     </div>
   );
