@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Save, Loader2, ChevronDown } from "lucide-react";
+import { ArrowLeft, Save, Loader2, ChevronDown, Image as ImageIcon, Link as LinkIcon } from "lucide-react";
 import { api } from "../../utils/api";
 
 interface Category {
@@ -13,12 +13,14 @@ export default function CreateResource() {
   const [loading, setLoading] = useState(false);
   const [categories, setCategories] = useState<Category[]>([]);
   const [fetchingCategories, setFetchingCategories] = useState(true);
+  const [imageError, setImageError] = useState(false); // Error state for preview
 
   const [formData, setFormData] = useState({
     category_id: "",
     name: "",
     description: "",
     official_url: "",
+    image_url: "", // Added image_url
     creator: "",
     identifier: "",
     media_type: "",
@@ -48,6 +50,7 @@ export default function CreateResource() {
       const payload = {
         ...formData,
         category_id: Number(formData.category_id),
+        image_url: formData.image_url.trim(), // Send as clean JSON
       };
       await api.post("/resources", payload);
       navigate(-1);
@@ -77,6 +80,44 @@ export default function CreateResource() {
         </header>
 
         <form onSubmit={handleSubmit} className="space-y-6 md:space-y-10">
+          
+          {/* IMAGE URL & PREVIEW SECTION */}
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <label className={`${labelStyles} flex items-center gap-2`}>
+                <LinkIcon size={12} /> Resource Cover Image (URL)
+              </label>
+              <input 
+                type="text" 
+                placeholder="https://example.com/image.jpg"
+                value={formData.image_url}
+                className={inputStyles}
+                onChange={(e) => {
+                  setFormData({...formData, image_url: e.target.value});
+                  setImageError(false);
+                }}
+              />
+            </div>
+            
+            <div className="w-full aspect-video bg-nature-nav/30 border-2 border-dashed border-nature-sage/10 flex items-center justify-center overflow-hidden">
+              {formData.image_url && !imageError ? (
+                <img 
+                  src={formData.image_url} 
+                  alt="Preview" 
+                  className="w-full h-full object-cover"
+                  onError={() => setImageError(true)} 
+                />
+              ) : (
+                <div className="flex flex-col items-center gap-3 opacity-20">
+                  <ImageIcon size={24} />
+                  <span className="text-[10px] font-bold uppercase tracking-widest">
+                    {imageError ? "Invalid URL" : "Asset Preview"}
+                  </span>
+                </div>
+              )}
+            </div>
+          </div>
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-8">
             <div className="space-y-2">
               <label className={labelStyles}>Resource Name</label>
@@ -147,7 +188,6 @@ export default function CreateResource() {
             </div>
           </div>
 
-          {/* Metadata Section - Standardized style & placeholders */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 md:gap-8">
              <div className="space-y-2">
                <label className={labelStyles}>Identifier</label>
