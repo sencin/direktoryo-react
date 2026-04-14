@@ -26,11 +26,18 @@ const CREATE_OPTIONS = [
     path: "/create/category"
   },
   {
-  id: "add-to-collection",
-  name: "Add to Collection",
+  id: "link-to-collection",
+  name: "Link to Collection",
   description: "Attach existing resources to a collection",
   icon: <Layers size={20} />,
   path: "/create/collection/add"
+},
+ {
+  id: "unlink-to-collection",
+  name: "unlink resources to the collections",
+  description: "remove existing resources to a collection",
+  icon: <Layers size={20} />,
+  path: "/create/collection/remove"
 },
 {
   id: "view-collections",

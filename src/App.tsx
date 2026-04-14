@@ -21,6 +21,7 @@ import EditCollection from './pages/Create/Edit/EditCollection';
 import CategoriesIndex from './pages/Create/CategoriesIndex';
 import EditCategory from './pages/Create/Edit/EditCategory';
 import ResourcesIndex from './pages/Create/ResourcesIndex';
+import RemoveFromCollection from './pages/Create/RemoveFromCollection';
 
 function AppLayout() {
   const location = useLocation();
@@ -65,6 +66,7 @@ function AppLayout() {
           <Route path="/create/collection" element={<CreateCollection />} />
           <Route path="/create/category" element={<CreateCategory />} />
           <Route path="/create/collection/add" element={<AddToCollection />} />
+          <Route path="/create/collection/remove" element={<RemoveFromCollection />} />
           <Route path="/edit/resource/:id" element={<EditResource />} />
           <Route path="/collections/:id" element={<CollectionView />} />
           <Route path="/collections" element={<CollectionsIndex />} />
