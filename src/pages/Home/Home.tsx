@@ -145,7 +145,7 @@ const toggleSave = async (id: number) => {
                 <h2
                     className={
                       isInsideCollection
-                        ? "text-[7px] font-black tracking-[0.3em] opacity-30 mb-1"
+                        ? "py-2 bg-black/5 hover:bg-black/10 rounded-full text-[9px] font-black uppercase tracking-widest transition-colors"
                         : "text-sm uppercase tracking-widest"
                     }
                   >
