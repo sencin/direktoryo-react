@@ -18,6 +18,9 @@ import AddToCollection from './pages/Create/AddToCollection';
 import CollectionView from './pages/Create/CollectionView';
 import CollectionsIndex from './pages/Create/CollectionsIndex';
 import EditCollection from './pages/Create/Edit/EditCollection';
+import CategoriesIndex from './pages/Create/CategoriesIndex';
+import EditCategory from './pages/Create/Edit/EditCategory';
+import ResourcesIndex from './pages/Create/ResourcesIndex';
 
 function AppLayout() {
   const location = useLocation();
@@ -68,6 +71,13 @@ function AppLayout() {
           <Route path="/collections/:id/edit" element={<EditCollection />} />
 
           
+          <Route path="/categories" element={<CategoriesIndex />} />
+          <Route path="/categories/:id/edit" element={<EditCategory />} />
+
+          
+          <Route path="/resources" element={<ResourcesIndex />} />
+          <Route path="/resources/:id/edit" element={<EditResource />} />
+
          <Route path="/login" element={
             <AuthGuard>
               <Login />

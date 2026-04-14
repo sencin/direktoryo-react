@@ -38,7 +38,21 @@ const CREATE_OPTIONS = [
   description: "Browse all your saved collections",
   icon: <FolderPlus size={20} />,
   path: "/collections"
-}
+},
+{
+  id: "view-categories",
+  name: "View Categories",
+  description: "View and manage all categories",
+  icon: <FolderPlus size={20} />,
+  path: "/categories"
+},
+ {
+    id: "view-to-resources",
+    name: "View Resources",
+    description: "View and manage your resources",
+    icon: <Layers size={20} />,
+    path: "/resources"
+  }
 ];
 
 export default function Create() {
