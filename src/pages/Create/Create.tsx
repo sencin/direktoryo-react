@@ -119,7 +119,7 @@ export default function Create() {
         </p>
       </header>
 
-      <main className="divide-y divide-nature-sage/10">
+      <main className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  bg-nature-sage/5 border-b border-nature-sage/10 gap-6 md:gap-8">
         {CREATE_OPTIONS.map((option) => {
           const disabled = !isAuthenticated;
 
