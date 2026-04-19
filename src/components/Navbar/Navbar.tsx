@@ -1,22 +1,31 @@
 import { NavLink } from 'react-router-dom';
 import { Home, Search, Bookmark, User,  Plus } from 'lucide-react';
+import { useAuth } from '../../utils/useAuth';
 
 const MAIN_LINKS: NavLinkItem[] = [
   { label: 'Home', path: '/home', icon: Home },     // Just the name
   { label: 'Search', path: '/search', icon: Search },
-  { label: 'Create', path: '/create', icon: Plus },
-  { label: 'Saved', path: '/saved', icon: Bookmark },
-  { label: 'Account', path: '/account', icon: User },
+  { label: 'Create', path: '/create', icon: Plus, authRequired: true},
+  { label: 'Saved', path: '/saved', icon: Bookmark, authRequired: true },
+  { label: 'Account', path: '/account', icon: User, authRequired: true },
 ];
 
 interface NavLinkItem {
   label: string;
   path: string;
   icon: React.ElementType;
+  authRequired?: boolean;
 }
 
-
 export default function Navbar() {
+  const isAuthenticated = useAuth();
+
+  const visibleLinks = MAIN_LINKS.filter((link) => {
+    if (!link.authRequired) return true;
+    return isAuthenticated === true;
+  });
+  
+  
   return (
     <nav className="fixed bottom-0 left-0 z-50 w-full h-16 transition-colors
 dark:bg-nature-bg bg-app-dark
@@ -39,7 +48,7 @@ md:top-0 md:left-0 md:h-screen md:w-24 md:border-t-0 md:border-r">
         {/* 2. MAIN LINKS */}
         <ul className="flex h-full w-full items-center justify-around 
                        md:h-auto md:flex-col md:gap-10 md:mt-4">
-          {MAIN_LINKS.map((link) => (
+          {visibleLinks.map((link) => (
             <li key={link.path}>
               <NavIcon link={link} />
             </li>
