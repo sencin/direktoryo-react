@@ -37,8 +37,74 @@ export default function Account() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-nature-bg text-nature-cream font-mono">
-        <p className="text-[10px] uppercase tracking-[0.4em] opacity-40 animate-pulse">Syncing Profile...</p>
+      <div className="min-h-screen bg-nature-bg text-nature-cream font-mono animate-pulse">
+        
+        {/* Banner Skeleton */}
+        <div className="h-32 md:h-48 bg-nature-sage/10 border-b border-nature-sage/20" />
+
+        <main className="max-w-5xl mx-auto px-6">
+          
+          {/* Profile Skeleton */}
+          <div className="relative -mt-12 mb-12 flex flex-col md:flex-row md:items-end gap-6">
+            
+            {/* Avatar */}
+            <div className="w-24 h-24 md:w-32 md:h-32 bg-nature-sage/10 border-2 border-nature-sage/20" />
+
+            {/* Name + bio */}
+            <div className="flex-1 space-y-3">
+              <div className="h-6 w-48 bg-nature-sage/10" />
+              <div className="h-3 w-96 bg-nature-sage/10" />
+              <div className="h-3 w-80 bg-nature-sage/10" />
+            </div>
+          </div>
+
+          {/* Stats Skeleton */}
+          <div className="grid grid-cols-3 gap-0 border border-nature-sage/10 mb-12">
+            {[1, 2, 3].map((i) => (
+              <div
+                key={i}
+                className="flex flex-col items-center justify-center p-6 border-r last:border-r-0 border-nature-sage/10 space-y-2"
+              >
+                <div className="h-6 w-10 bg-nature-sage/10" />
+                <div className="h-3 w-16 bg-nature-sage/10" />
+              </div>
+            ))}
+          </div>
+
+          {/* Content Skeleton */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+
+            {/* Settings list */}
+            <div className="lg:col-span-2 space-y-4">
+              <div className="h-3 w-40 bg-nature-sage/10 mb-4" />
+
+              {[1, 2, 3, 4].map((i) => (
+                <div
+                  key={i}
+                  className="p-5 border border-nature-sage/10 flex items-center gap-6"
+                >
+                  <div className="w-6 h-6 bg-nature-sage/10" />
+                  <div className="space-y-2">
+                    <div className="h-3 w-48 bg-nature-sage/10" />
+                    <div className="h-2 w-64 bg-nature-sage/10" />
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Sidebar */}
+            <div className="space-y-6">
+              <div className="p-6 border border-nature-sage/10 space-y-3">
+                <div className="h-3 w-24 bg-nature-sage/10" />
+                <div className="h-2 w-32 bg-nature-sage/10" />
+                <div className="h-2 w-28 bg-nature-sage/10" />
+              </div>
+
+              <div className="h-12 w-full bg-red-900/10 border border-red-900/20" />
+            </div>
+
+          </div>
+        </main>
       </div>
     );
   }
