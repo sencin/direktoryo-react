@@ -67,7 +67,7 @@ export default function SearchBar() {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder="Search Indeed, JobStreet, etc..."
+            placeholder="Search Resources, JobStreet, PSA, etc..."
             className="bg-transparent w-full outline-none font-bold text-sm"
             />
             
