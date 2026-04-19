@@ -6,11 +6,13 @@ import {
   Bookmark, Edit3 
 } from "lucide-react";
 import { api } from "../../utils/api";
+import { auth } from "../../utils/auth";
 
 export default function Account() {
   const navigate = useNavigate();
   const [user, setUser] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -28,10 +30,15 @@ export default function Account() {
 
   const handleLogout = async () => {
     try {
-      await api.post("/auth/logout", {});
-      navigate("/login");
+      setIsLoggingOut(true);
+      auth.clear();
+      setTimeout(() => {
+        navigate("/login", { replace: true });
+      }, 300);
+
     } catch (err) {
       console.error("Logout failed", err);
+      setIsLoggingOut(false);
     }
   };
 
@@ -205,10 +212,14 @@ export default function Account() {
 
             <button
               onClick={handleLogout}
-              className="w-full flex items-center justify-center gap-3 p-5 border-2 border-red-900/20 text-red-400 hover:bg-red-950/20 transition-all"
+              disabled={isLoggingOut}
+              className="w-full flex items-center justify-center gap-3 p-5 border-2 border-red-900/20 text-red-400 hover:bg-red-950/20 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <LogOut size={20} />
-              <span className="font-black uppercase tracking-widest text-sm">Terminate Session</span>
+              <LogOut size={20} className={isLoggingOut ? "animate-pulse" : ""} />
+
+              <span className="font-black uppercase tracking-widest text-sm">
+                {isLoggingOut ? "Terminating..." : "Terminate Session"}
+              </span>
             </button>
           </div>
         </div>
