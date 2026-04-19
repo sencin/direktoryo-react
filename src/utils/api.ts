@@ -46,7 +46,7 @@ export const api = {
   },
 
   get: (endpoint: string) => api.request(endpoint, 'GET'),
-  post: (endpoint: string, data: any) => api.request(endpoint, 'POST', data),
+  post: (endpoint: string, data?: any) => api.request(endpoint, 'POST', data),
   put: (endpoint: string, data: any) => api.request(endpoint, 'PUT', data),
   patch: (endpoint: string, data: any) => api.request(endpoint, 'PATCH', data),
   delete: (endpoint: string) => api.request(endpoint, 'DELETE'),
