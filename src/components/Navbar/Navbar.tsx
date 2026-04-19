@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import { Home, Search, Bookmark, User,  Plus } from 'lucide-react';
+import { Home, Search, Bookmark, User,  Plus, LogIn } from 'lucide-react';
 import { useAuth } from '../../utils/useAuth';
 
 const MAIN_LINKS: NavLinkItem[] = [
@@ -8,6 +8,7 @@ const MAIN_LINKS: NavLinkItem[] = [
   { label: 'Create', path: '/create', icon: Plus, authRequired: true},
   { label: 'Saved', path: '/saved', icon: Bookmark, authRequired: true },
   { label: 'Account', path: '/account', icon: User, authRequired: true },
+  { label: 'Login', path: '/login', icon: LogIn, guestOnly: true },
 ];
 
 interface NavLinkItem {
@@ -15,14 +16,27 @@ interface NavLinkItem {
   path: string;
   icon: React.ElementType;
   authRequired?: boolean;
+  guestOnly?: boolean;
+}
+
+function NavSkeleton() {
+  return (
+    <div className="flex flex-col items-center gap-1 animate-pulse opacity-20">
+      <div className="w-6 h-6 bg-nature-sage rounded-sm" />
+      <div className="w-10 h-2 bg-nature-sage rounded-sm" />
+    </div>
+  );
 }
 
 export default function Navbar() {
   const isAuthenticated = useAuth();
 
   const visibleLinks = MAIN_LINKS.filter((link) => {
-    if (!link.authRequired) return true;
-    return isAuthenticated === true;
+    // 1. Show guest-only links (Login) only if NOT authenticated
+    if (link.guestOnly) return isAuthenticated === false;
+    // 2. Show auth-required links only if authenticated
+    if (link.authRequired) return isAuthenticated === true;
+    return true;
   });
   
   
@@ -53,6 +67,14 @@ md:top-0 md:left-0 md:h-screen md:w-24 md:border-t-0 md:border-r">
               <NavIcon link={link} />
             </li>
           ))}
+
+
+          {isAuthenticated === null && (
+            <>
+              <li><NavSkeleton /></li>
+            </>
+          )}
+
         </ul>
       </div>
     </nav>
