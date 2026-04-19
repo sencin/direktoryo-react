@@ -72,13 +72,13 @@ export default function Search() {
         <SearchDesktop {...searchProps} />
       </div>
 
-        <div className="xl:hidden">
-  <BookDetailPanel
-    book={selectedBook}
-    isOpen={isSidebarOpen}
-    setIsOpen={setIsSidebarOpen}
-  />
-</div>
+   
+      <BookDetailPanel
+        book={selectedBook}
+        isOpen={isSidebarOpen}
+        setIsOpen={setIsSidebarOpen}
+      />
+
 
 
     </main>

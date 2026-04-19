@@ -1,9 +1,9 @@
 import { 
-  Search as SearchIcon, Globe, Loader2, SearchX, 
-  Download, ListPlus, Bookmark 
+  Search as SearchIcon, Globe, Loader2, SearchX,
+  ArrowRight
 } from 'lucide-react';
 
-export default function SearchDesktop({ query, setQuery, results, isLoading, hasSearched }: any) {
+export default function SearchDesktop({ query, setQuery, results, isLoading, hasSearched, onBookClick }: any) {
   return (
     <div className="flex flex-col items-center min-h-screen p-10 pt-16 bg-nature-bg">
       <div className="w-full max-w-7xl space-y-12">
@@ -46,58 +46,20 @@ export default function SearchDesktop({ query, setQuery, results, isLoading, has
           {hasSearched && results.length > 0 ? (
             <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-x-8 gap-y-12 animate-in fade-in slide-in-from-bottom-8 duration-700">
               {results.map((item: any) => (
-                <div key={item.id} className="flex flex-col">
-                  
-                  {/* Top: Cover & Meta */}
-                  <div className="flex gap-4 mb-6">
-                    <div className="w-28 h-40 flex-shrink-0 bg-nature-nav border border-nature-cream/10 rounded-sm overflow-hidden relative shadow-xl">
-                      {item.image_url ? (
-                        <img src={item.image_url} className="w-full h-full object-cover" alt="" />
-                      ) : (
-                        <div className="w-full h-full flex items-center justify-center opacity-10">
-                          <Globe size={32} />
-                        </div>
-                      )}
-                    </div>
-
-                    <div className="flex-1 min-w-0 relative">
-                      <div className="absolute top-0 right-0">
-                        <Bookmark size={20} className="text-nature-cream/20 hover:text-nature-sage cursor-pointer transition-colors" />
-                      </div>
-                      <h4 className="text-lg font-black text-nature-cream uppercase leading-tight pr-8">
-                        {item.title}
-                      </h4>
-                      <p className="text-xs text-nature-sage font-bold mt-1 uppercase">
-                        By {item.author || "Unknown Author"}
-                      </p>
-                      <p className="text-[11px] text-nature-cream/40 mt-3 line-clamp-4 leading-relaxed font-medium">
-                        {item.description || "No description available for this resource."}
-                      </p>
-                      <p className="text-[10px] text-nature-cream/20 font-black uppercase tracking-tighter mt-2">
-                         {item.category || "General"}
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Action Bar */}
-                     <a
-                      href={item?.url || '#'}
-                      target="_blank"
-                      className="block w-full py-5 bg-nature-sage text-center text-nature-cream text-[10px] font-black uppercase tracking-widest"
-                    >
-                      Visit Official Website
-                    </a>
-
-
-                  <div className="flex items-center justify-around border-t border-nature-cream/10 pt-4">
-                    <button className="flex items-center gap-2 text-[10px] font-black uppercase text-nature-cream/40 hover:text-nature-cream transition-colors">
-                      <Download size={14} /> Download
-                    </button>
-                    <button className="flex items-center gap-2 text-[10px] font-black uppercase text-nature-cream/40 hover:text-nature-cream transition-colors">
-                      <ListPlus size={14} /> Add to List
-                    </button>
-                  </div>
+                        <div key={item.id} onClick={() => onBookClick(item)}  className="flex items-center gap-4 py-5 group cursor-pointer">
+                <div className="w-14 h-14 flex-shrink-0 bg-nature-nav border border-nature-cream/10 rounded-lg overflow-hidden">
+                  {item.image_url ? (
+                    <img src={item.image_url} className="w-full h-full object-cover" alt="" />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center opacity-10"><Globe size={20} /></div>
+                  )}
                 </div>
+                <div className="flex-1 min-w-0">
+                  <h4 className="text-[13px] font-black text-nature-cream uppercase truncate tracking-tight">{item.title}</h4>
+                  <p className="text-[10px] text-nature-sage font-bold uppercase tracking-widest">{item.author}</p>
+                </div>
+                <ArrowRight size={16} className="text-nature-sage" />
+              </div>
               ))}
             </div>
           ) : hasSearched && !isLoading ? (
