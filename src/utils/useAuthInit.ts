@@ -4,6 +4,7 @@ import { auth } from "../utils/auth";
 
 export function useAuthInit() {
   const [loading, setLoading] = useState(true);
+  const [isValid, setIsValid] = useState(false);
 
   useEffect(() => {
     const init = async () => {
@@ -11,7 +12,8 @@ export function useAuthInit() {
         const token = auth.getToken();
 
         if (!token) {
-          setLoading(false);
+          auth.clear();
+          setIsValid(false);
           return;
         }
 
@@ -19,9 +21,14 @@ export function useAuthInit() {
 
         if (!me || me.error) {
           auth.clear();
+          setIsValid(false);
+        } else {
+          auth.set(token, me.user);
+          setIsValid(true);
         }
-      } catch (err) {
+      } catch {
         auth.clear();
+        setIsValid(false);
       } finally {
         setLoading(false);
       }
@@ -30,5 +37,5 @@ export function useAuthInit() {
     init();
   }, []);
 
-  return { loading };
+  return { loading, isValid };
 }
